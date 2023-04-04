@@ -11,6 +11,7 @@ CREATE TABLE [account]
     [password]      VARBINARY(100) NOT NULL,
     [full_name]     NVARCHAR(100)  NOT NULL,
     [gender]        BIT            NOT NULL,
+    [avatar]        VARCHAR(255),
     [email]         VARCHAR(254),
     [phone]         VARCHAR(15),
     [address]       NVARCHAR(255),
@@ -21,7 +22,10 @@ CREATE TABLE [account]
     CONSTRAINT pk_account PRIMARY KEY ([id]),
     CONSTRAINT chk_account_gender CHECK (gender IN (0, 1)),
 )
-CREATE UNIQUE INDEX [uqi_account] ON [account] ([username], [email], [phone]) WHERE [is_deleted] = 0
+CREATE UNIQUE INDEX [uqi_account_username] ON [account] ([username]) WHERE [is_deleted] = 0
+CREATE UNIQUE INDEX [uqi_account_email] ON [account] ([email]) WHERE [is_deleted] = 0 AND [email] IS NOT NULL
+CREATE UNIQUE INDEX [uqi_account_phone] ON [account] ([phone]) WHERE [is_deleted] = 0 AND [phone] IS NOT NULL
+
 
 CREATE TABLE [customer]
 (
@@ -49,7 +53,7 @@ CREATE TABLE [genre]
     [is_deleted]  BIT           NOT NULL DEFAULT 0,
     CONSTRAINT pk_genre PRIMARY KEY ([id]),
 )
-CREATE UNIQUE INDEX [uqi_genre] ON [genre] ([name]) WHERE [is_deleted] = 0
+CREATE UNIQUE INDEX [uqi_genre_name] ON [genre] ([name]) WHERE [is_deleted] = 0
 
 CREATE TABLE [book]
 (
@@ -76,7 +80,7 @@ CREATE TABLE [book]
     CONSTRAINT chk_book_quantity CHECK ([quantity] >= 0),
     CONSTRAINT chk_book_publication_year CHECK ([publication_year] >= 0),
 )
-CREATE UNIQUE INDEX [uqi_book] ON [book] ([isbn]) WHERE [is_deleted] = 0
+CREATE UNIQUE INDEX [uqi_book_isbn] ON [book] ([isbn]) WHERE [is_deleted] = 0
 
 CREATE TABLE [book_genre]
 (

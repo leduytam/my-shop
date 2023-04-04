@@ -23,6 +23,8 @@ BEGIN
     SELECT [account].[id] AS [id],
            [username],
            [full_name],
+           [gender],
+           [avatar],
            [email],
            [phone],
            [address],
@@ -39,6 +41,7 @@ CREATE PROCEDURE [dbo].[usp_create_customer] @username VARCHAR(50),
                                              @password VARCHAR(100),
                                              @full_name NVARCHAR(100),
                                              @gender BIT,
+                                             @avatar VARCHAR(255),
                                              @email VARCHAR(254),
                                              @phone VARCHAR(15),
                                              @address NVARCHAR(255),
@@ -55,9 +58,9 @@ BEGIN
 
     SET @id = NEWID()
 
-    INSERT INTO [account] ([id], [username], [password], [full_name], [gender], [email], [phone], [address],
+    INSERT INTO [account] ([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address],
                            [date_of_birth])
-    VALUES (@id, @username, HASHBYTES('SHA2_512', @password), @full_name, @gender, @email, @phone, @address,
+    VALUES (@id, @username, HASHBYTES('SHA2_512', @password), @full_name, @gender, @avatar, @email, @phone, @address,
             @date_of_birth)
 
     INSERT INTO [customer] ([id]) VALUES (@id)
@@ -68,6 +71,7 @@ CREATE PROCEDURE [dbo].[usp_create_employee] @username VARCHAR(50),
                                              @password VARCHAR(100),
                                              @full_name NVARCHAR(100),
                                              @gender BIT,
+                                             @avatar VARCHAR(255),
                                              @email VARCHAR(254),
                                              @phone VARCHAR(15),
                                              @address NVARCHAR(255),
@@ -86,9 +90,9 @@ BEGIN
 
     SET @id = NEWID()
 
-    INSERT INTO [account] ([id], [username], [password], [full_name], [gender], [email], [phone], [address],
+    INSERT INTO [account] ([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address],
                            [date_of_birth])
-    VALUES (@id, @username, HASHBYTES('SHA2_512', @password), @full_name, @gender, @email, @phone, @address,
+    VALUES (@id, @username, HASHBYTES('SHA2_512', @password), @full_name, @gender, @avatar, @email, @phone, @address,
             @date_of_birth)
 
     INSERT INTO [employee] ([id], [job_title], [salary]) VALUES (@id, @job_title, @salary)

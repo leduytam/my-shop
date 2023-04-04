@@ -5,39 +5,46 @@ DECLARE @custom_password VARBINARY(100) = HASHBYTES('SHA2_512', '123456')
 
 /* =================== CUSTOMERS =================== */
 INSERT INTO [account]
-([id], [username], [password], [full_name], [gender], [email], [phone], [address], [date_of_birth], created_at,
+([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address], [date_of_birth],
+ created_at,
  updated_at)
 VALUES ('1FCDD47A-FB91-45C4-B063-583BE3025AD7', 'nvphong', @custom_password, N'Nguyễn Văn Phong', 1,
-        'nvphong@myshop.com', '0986118119', N'249 Lê Hồng Phong, Phường 4, Quận 5, Tp.HCM', '1994-09-22',
-        '2023-03-21 02:41:16', '2023-03-21 02:41:16')
+        'images/avatars/nvphong.png', 'nvphong@myshop.com', '0986118119',
+        N'249 Lê Hồng Phong, Phường 4, Quận 5, Tp.HCM', '1994-09-22', '2023-03-21 02:41:16', '2023-03-21 02:41:16')
 
 INSERT INTO [account]
-([id], [username], [password], [full_name], [gender], [email], [phone], [address], [date_of_birth], created_at,
+([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address], [date_of_birth],
+ created_at,
  updated_at)
-VALUES ('DB316FD5-000C-4FC0-831F-CA28BCBD53C2', 'tmquoc', @custom_password, N'Trần Minh Quốc', 1, 'tmquoc@myshop.com',
-        '0987654321', N'123 Tôn Đức Thắng, Phường 2, Quận 8, Tp.HCM', '1997-01-25', '2023-03-24 09:04:14',
-        '2023-03-24 09:04:14')
+VALUES ('DB316FD5-000C-4FC0-831F-CA28BCBD53C2', 'tmquoc', @custom_password, N'Trần Minh Quốc', 1,
+        'images/avatars/tmquoc.png', 'tmquoc@myshop.com', '0987654321', N'123 Tôn Đức Thắng, Phường 2, Quận 8, Tp.HCM',
+        '1997-01-25', '2023-03-24 09:04:14', '2023-03-24 09:04:14')
 
 INSERT INTO [account]
-([id], [username], [password], [full_name], [gender], [email], [phone], [address], [date_of_birth], created_at,
+([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address], [date_of_birth],
+ created_at,
  updated_at)
-VALUES ('17817A7B-9240-4911-912D-6C45A3DC87F3', 'hhduc', @custom_password, N'Huỳnh Huy Đức', 1, 'hhduc@myshop.com',
-        '0353098127', N'102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Tp.HCM', '1991-11-30', '2023-03-06 10:49:34',
+VALUES ('17817A7B-9240-4911-912D-6C45A3DC87F3', 'hhduc', @custom_password, N'Huỳnh Huy Đức', 1,
+        'images/avatars/hhduc.png', 'hhduc@myshop.com', '0353098127',
+        N'102 Phan Văn Hớn, Tân Thới Nhất, Quận 12, Tp.HCM', '1991-11-30', '2023-03-06 10:49:34',
         '2023-03-06 10:49:34')
 
 INSERT INTO [account]
-([id], [username], [password], [full_name], [gender], [email], [phone], [address], [date_of_birth], created_at,
+([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address], [date_of_birth],
+ created_at,
  updated_at)
 VALUES ('F3B007E9-033E-4C42-AB64-866CA3034CA0', 'hththao', @custom_password, N'Huỳnh Thị Hiếu Thảo', 0,
-        'hththao@myshop.com', '0389709057', N'1/45 Nguyễn Văn Quá, Đông Hưng Thuận, Quận 12, Tp.HCM',
-        '1991-07-22', '2023-03-10 19:34:41', '2023-03-10 19:34:41')
+        'images/avatars/hththao.png', 'hththao@myshop.com', '0389709057',
+        N'1/45 Nguyễn Văn Quá, Đông Hưng Thuận, Quận 12, Tp.HCM', '1991-07-22', '2023-03-10 19:34:41',
+        '2023-03-10 19:34:41')
 
 INSERT INTO [account]
-([id], [username], [password], [full_name], [gender], [email], [phone], [address], [date_of_birth], created_at,
+([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address], [date_of_birth],
+ created_at,
  updated_at)
-VALUES ('35382B92-3B89-4CA5-BEA8-C364DE661C6B', 'dvha', @custom_password, N'Dương Vũ Hà', 0, 'dvha@myshop.com',
-        '0977686859', N'36/3E Phan Văn Đối, Bà Điểm, Hóc Môn, Tp.HCM', '1981-11-12', '2023-03-07 20:09:23',
-        '2023-03-07 20:09:23')
+VALUES ('35382B92-3B89-4CA5-BEA8-C364DE661C6B', 'dvha', @custom_password, N'Dương Vũ Hà', 0,
+        'images/avatars/dvha.png', 'dvha@myshop.com', '0977686859', N'36/3E Phan Văn Đối, Bà Điểm, Hóc Môn, Tp.HCM',
+        '1981-11-12', '2023-03-07 20:09:23', '2023-03-07 20:09:23')
 
 INSERT INTO [customer] ([id])
 VALUES ('1FCDD47A-FB91-45C4-B063-583BE3025AD7'),
@@ -50,32 +57,36 @@ VALUES ('1FCDD47A-FB91-45C4-B063-583BE3025AD7'),
 
 /* =================== EMPLOYEES =================== */
 INSERT INTO [account]
-([id], [username], [password], [full_name], [gender], [email], [phone], [address], [date_of_birth], created_at,
+([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address], [date_of_birth],
+ created_at,
  updated_at)
-VALUES ('997C2440-D56C-4D84-A724-5E00FEA3EC1E', 'ldtam', @custom_password, N'Lê Duy Tâm', 1, 'ldtam@myshop.com',
-        '0925105840', N'227 Nguyễn Văn Cừ, P4, Quận 5, Tp.HCM', '1995-08-22', '2023-02-10 08:30:21',
-        '2023-02-10 08:30:21')
+VALUES ('997C2440-D56C-4D84-A724-5E00FEA3EC1E', 'ldtam', @custom_password, N'Lê Duy Tâm', 1,
+        'images/avatars/ldtam.png', 'ldtam@myshop.com', '0925105840', N'227 Nguyễn Văn Cừ, P4, Quận 5, Tp.HCM',
+        '1995-08-22', '2023-02-10 08:30:21', '2023-02-10 08:30:21')
 
 INSERT INTO [account]
-([id], [username], [password], [full_name], [gender], [email], [phone], [address], [date_of_birth], created_at,
+([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address], [date_of_birth],
+ created_at,
  updated_at)
-VALUES ('4B4CB720-9F18-4C1A-B8B1-C326638E48E1', 'btsang', @custom_password, N'Bùi Tấn Sang', 1, 'btsang@myshop.com',
-        '0324831706', N'52 Hồ Thị Kỷ, Phường 1, Quận 10, Tp.HCM', '2000-09-19', '2023-02-13 07:21:38',
-        '2023-02-13 07:21:38')
+VALUES ('4B4CB720-9F18-4C1A-B8B1-C326638E48E1', 'btsang', @custom_password, N'Bùi Tấn Sang', 1,
+        'images/avatars/btsang.png', 'btsang@myshop.com', '0324831706', N'52 Hồ Thị Kỷ, Phường 1, Quận 10, Tp.HCM',
+        '2000-09-19', '2023-02-13 07:21:38', '2023-02-13 07:21:38')
 
 INSERT INTO [account]
-([id], [username], [password], [full_name], [gender], [email], [phone], [address], [date_of_birth], created_at,
+([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address], [date_of_birth],
+ created_at,
  updated_at)
-VALUES ('0D34C079-DFD0-4AF4-B488-70BCFCB477E8', 'lakiet', @custom_password, N'Lê Anh Kiệt', 1, 'lakiet@myshop.com',
-        '0799420203', N'36 An Dương Vương, Phường 9, Quận 5, Tp.HCM', '1996-03-31', '2023-02-04 06:14:29',
-        '2023-02-04 06:14:29')
+VALUES ('0D34C079-DFD0-4AF4-B488-70BCFCB477E8', 'lakiet', @custom_password, N'Lê Anh Kiệt', 1,
+        'images/avatars/lakiet.png', 'lakiet@myshop.com', '0799420203', N'36 An Dương Vương, Phường 9, Quận 5, Tp.HCM',
+        '1996-03-31', '2023-02-04 06:14:29', '2023-02-04 06:14:29')
 
 INSERT INTO [account]
-([id], [username], [password], [full_name], [gender], [email], [phone], [address], [date_of_birth], created_at,
+([id], [username], [password], [full_name], [gender], [avatar], [email], [phone], [address], [date_of_birth],
+ created_at,
  updated_at)
-VALUES ('BDE46E58-31D4-4EE1-BE19-B0B0B8C14F1F', 'bhtoan', @custom_password, N'Bành Hảo Toàn', 1, 'bhtoan@myshop.com',
-        '0523017025', N'356 Trần Hưng Đạo, Phường 2, Quận 5, Tp.HCM', '1999-01-17', '2023-02-23 13:56:04',
-        '2023-02-23 13:56:04')
+VALUES ('BDE46E58-31D4-4EE1-BE19-B0B0B8C14F1F', 'bhtoan', @custom_password, N'Bành Hảo Toàn', 1,
+        'images/avatars/bhtoan.png', 'bhtoan@myshop.com', '0523017025', N'356 Trần Hưng Đạo, Phường 2, Quận 5, Tp.HCM',
+        '1999-01-17', '2023-02-23 13:56:04', '2023-02-23 13:56:04')
 
 INSERT INTO [employee] ([id], [job_title], [salary])
 VALUES ('997C2440-D56C-4D84-A724-5E00FEA3EC1E', N'Nhân Viên Bán Hàng', 20000000),
