@@ -104,6 +104,7 @@ CREATE TYPE [dbo].[type_genre_id_table] AS TABLE
 )
 GO
 
+
 CREATE PROCEDURE [dbo].[usp_get_books] @genre_ids [dbo].[type_genre_id_table] READONLY,
                                        @name NVARCHAR(100) = NULL,
                                        @page_number INT = 1,
@@ -476,9 +477,9 @@ BEGIN
 
     DECLARE @status VARCHAR(10) = (SELECT [status] FROM [order] WHERE [id] = @id)
 
-    IF @status = 'delivered' OR @status = 'canceled'
+    IF @status <> 'pending'
         BEGIN
-            RAISERROR ('Unable to update order as it is already delivered or canceled.', 16, 1)
+            RAISERROR ('Update order failed! Only pending order can be updated', 16, 1)
         END
 
     UPDATE [order]
@@ -586,8 +587,170 @@ BEGIN
              JOIN [order_item] ON [order_item].[order_id] = [order].[id]
              JOIN [book] ON [book].[id] = [order_item].[book_id]
     WHERE ([book].[is_deleted] = 0)
+      AND ([order].[status] = 'delivered')
       AND ([order].[created_at] BETWEEN @start_date AND @end_date)
     GROUP BY [book].[id], [book].[name], [book].[image]
+    ORDER BY [quantity_sold] DESC
+END
+GO
+
+CREATE PROCEDURE [dbo].[usp_get_daily_revenue_profit] @days INT = 365
+AS
+BEGIN
+    WITH [days] AS (SELECT DATEADD(DAY, -number, DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()), 0)) AS [day]
+                    FROM master..spt_values
+                    WHERE type = 'P'
+                      AND number <= @days)
+    SELECT [days].[day],
+           COALESCE(SUM(oi.[quantity] * oi.[price]), 0)                         AS [revenue],
+           COALESCE(SUM(oi.[quantity] * (oi.[price] - oi.[original_price])), 0) AS [profit]
+    FROM [days]
+             LEFT JOIN [order] o ON DATEPART(day, o.[created_at]) = DATEPART(day, [days].[day])
+        AND DATEPART(MONTH, o.[created_at]) = DATEPART(MONTH, [days].[day])
+        AND DATEPART(YEAR, o.[created_at]) = DATEPART(YEAR, [days].[day])
+        AND o.[status] = 'delivered'
+             LEFT JOIN [order_item] oi ON oi.[order_id] = o.[id]
+    GROUP BY [days].[day]
+    ORDER BY [days].[day] DESC
+END
+GO
+
+CREATE PROCEDURE [dbo].[usp_get_weekly_revenue_profit] @weeks INT = 52
+AS
+BEGIN
+    WITH [weeks] AS (SELECT DATEADD(WEEK, -number, DATEADD(WEEK, DATEDIFF(WEEK, 0, GETDATE()), 0)) AS [week]
+                     FROM master..spt_values
+                     WHERE type = 'P'
+                       AND number <= @weeks)
+    SELECT [weeks].[week],
+           COALESCE(SUM(oi.[quantity] * oi.[price]), 0)                         AS [revenue],
+           COALESCE(SUM(oi.[quantity] * (oi.[price] - oi.[original_price])), 0) AS [profit]
+    FROM [weeks]
+             LEFT JOIN [order] o ON DATEPART(WEEK, o.[created_at]) = DATEPART(WEEK, [weeks].[week])
+        AND DATEPART(YEAR, o.[created_at]) = DATEPART(YEAR, [weeks].[week])
+        AND o.[status] = 'delivered'
+             LEFT JOIN [order_item] oi ON o.[id] = oi.[order_id]
+    GROUP BY [weeks].[week]
+    ORDER BY [weeks].[week]
+END
+GO
+
+CREATE PROCEDURE [dbo].[usp_get_monthly_revenue_profit] @months INT = 12
+AS
+BEGIN
+    WITH [months] AS (SELECT DATEADD(MONTH, -number, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)) AS [month]
+                      FROM master..spt_values
+                      WHERE type = 'P'
+                        AND number <= @months)
+    SELECT [months].[month],
+           COALESCE(SUM(oi.[quantity] * oi.[price]), 0)                         AS [revenue],
+           COALESCE(SUM(oi.[quantity] * (oi.[price] - oi.[original_price])), 0) AS [profit]
+    FROM [months]
+             LEFT JOIN [order] o ON DATEPART(MONTH, o.[created_at]) = DATEPART(MONTH, [months].[month])
+        AND DATEPART(YEAR, o.[created_at]) = DATEPART(YEAR, [months].[month])
+        AND o.[status] = 'delivered'
+             LEFT JOIN [order_item] oi ON o.[id] = oi.[order_id]
+    GROUP BY [months].[month]
+    ORDER BY [months].[month]
+END
+GO
+
+CREATE PROCEDURE [dbo].[usp_get_yearly_revenue_profit] @years INT = 10
+AS
+BEGIN
+    WITH [years] AS (SELECT DATEADD(YEAR, -number, DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()), 0)) AS [year]
+                     FROM master..spt_values
+                     WHERE type = 'P'
+                       AND number <= @years)
+    SELECT [years].[year],
+           COALESCE(SUM(oi.[quantity] * oi.[price]), 0)                         AS [revenue],
+           COALESCE(SUM(oi.[quantity] * (oi.[price] - oi.[original_price])), 0) AS [profit]
+    FROM [years]
+             LEFT JOIN [order] o ON DATEPART(YEAR, o.[created_at]) = DATEPART(YEAR, [years].[year])
+        AND o.[status] = 'delivered'
+             LEFT JOIN [order_item] oi ON o.[id] = oi.[order_id]
+    GROUP BY [years].[year]
+    ORDER BY [years].[year]
+END
+GO
+
+CREATE PROCEDURE [dbo].[usp_get_daily_product_quantity_sold] @book_id UNIQUEIDENTIFIER,
+                                                             @days INT = 365
+AS
+BEGIN
+    WITH [days] AS (SELECT DATEADD(DAY, -number, DATEADD(DAY, DATEDIFF(DAY, 0, GETDATE()), 0)) AS [day]
+                    FROM master..spt_values
+                    WHERE type = 'P'
+                      AND number <= @days)
+    SELECT [days].[day],
+           COALESCE(SUM(oi.[quantity]), 0) AS [quantity_sold]
+    FROM [days]
+             LEFT JOIN [order] o ON DATEPART(DAY, o.[created_at]) = DATEPART(DAY, [days].[day])
+        AND DATEPART(MONTH, o.[created_at]) = DATEPART(MONTH, [days].[day])
+        AND DATEPART(YEAR, o.[created_at]) = DATEPART(YEAR, [days].[day])
+        AND o.[status] = 'delivered'
+             LEFT JOIN [order_item] oi ON oi.[order_id] = o.[id] AND oi.[book_id] = @book_id
+    GROUP BY [days].[day]
+    ORDER BY [days].[day] DESC
+END
+GO
+
+CREATE PROCEDURE [dbo].[usp_get_weekly_product_quantity_sold] @book_id UNIQUEIDENTIFIER,
+                                                              @weeks INT = 52
+AS
+BEGIN
+    WITH [weeks] AS (SELECT DATEADD(WEEK, -number, DATEADD(WEEK, DATEDIFF(WEEK, 0, GETDATE()), 0)) AS [week]
+                     FROM master..spt_values
+                     WHERE type = 'P'
+                       AND number <= @weeks)
+    SELECT [weeks].[week],
+           COALESCE(SUM(oi.[quantity]), 0) AS [quantity_sold]
+    FROM [weeks]
+             LEFT JOIN [order] o ON DATEPART(WEEK, o.[created_at]) = DATEPART(WEEK, [weeks].[week])
+        AND DATEPART(YEAR, o.[created_at]) = DATEPART(YEAR, [weeks].[week])
+        AND o.[status] = 'delivered'
+             LEFT JOIN [order_item] oi ON o.[id] = oi.[order_id] AND oi.[book_id] = @book_id
+    GROUP BY [weeks].[week]
+    ORDER BY [weeks].[week]
+END
+GO
+
+CREATE PROCEDURE [dbo].[usp_get_monthly_product_quantity_sold] @book_id UNIQUEIDENTIFIER,
+                                                               @months INT = 12
+AS
+BEGIN
+    WITH [months] AS (SELECT DATEADD(MONTH, -number, DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)) AS [month]
+                      FROM master..spt_values
+                      WHERE type = 'P'
+                        AND number <= @months)
+    SELECT [months].[month],
+           COALESCE(SUM(oi.[quantity]), 0) AS [quantity_sold]
+    FROM [months]
+             LEFT JOIN [order] o ON DATEPART(MONTH, o.[created_at]) = DATEPART(MONTH, [months].[month])
+        AND DATEPART(YEAR, o.[created_at]) = DATEPART(YEAR, [months].[month])
+        AND o.[status] = 'delivered'
+             LEFT JOIN [order_item] oi ON o.[id] = oi.[order_id] AND oi.[book_id] = @book_id
+    GROUP BY [months].[month]
+    ORDER BY [months].[month]
+END
+GO
+
+CREATE PROCEDURE [dbo].[usp_get_yearly_product_quantity_sold] @book_id UNIQUEIDENTIFIER,
+                                                              @years INT = 10
+AS
+BEGIN
+    WITH [years] AS (SELECT DATEADD(YEAR, -number, DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()), 0)) AS [year]
+                     FROM master..spt_values
+                     WHERE type = 'P'
+                       AND number <= @years)
+    SELECT [years].[year],
+           COALESCE(SUM(oi.[quantity]), 0) AS [quantity_sold]
+    FROM [years]
+             LEFT JOIN [order] o ON DATEPART(YEAR, o.[created_at]) = DATEPART(YEAR, [years].[year])
+        AND o.[status] = 'delivered'
+             LEFT JOIN [order_item] oi ON o.[id] = oi.[order_id] AND oi.[book_id] = @book_id
+    GROUP BY [years].[year]
+    ORDER BY [years].[year]
 END
 GO
 /* =================== COMMON =================== */
