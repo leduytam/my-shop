@@ -5,8 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyShop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="550" Width="800"
+        WindowStartupLocation="CenterScreen">
+    <Border>
+        <Border.Background>
+            <ImageBrush ImageSource="/images/general/account.jpg"/>
 
-    </Grid>
+        </Border.Background>
+        <Border BorderThickness="5" RenderTransformOrigin="0.500,0.900" Opacity="0.9">
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1">
+                    <GradientStop Color="#462AD8" Offset="0.1"></GradientStop>
+                    <GradientStop Color="#9c04ba" Offset="0.75"></GradientStop>
+                    <GradientStop Color="#8A16C1" Offset="1"></GradientStop>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1">
+                    <GradientStop Color="#3e03a3" Offset="0.75"></GradientStop>
+                    <GradientStop Color="#7804de" Offset="0.1"></GradientStop>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <StackPanel Width="250" Orientation="Vertical" Margin="0, 35, 0, 0">
+                <TextBlock Opacity="1" Text="Login" Foreground="White"  FontSize="60" FontFamily="Montserrat" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,50"></TextBlock>
+                <TextBlock Text="Username" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
+                <StackPanel Margin="0,0,0,20" Orientation="Horizontal" Width="250">
+                    <TextBox Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
+                    </TextBox>
+                </StackPanel>
+                <TextBlock Text="Password" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
+                <StackPanel Margin="0,0,0,20" Orientation="Horizontal" Width="250">
+                    <TextBox Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
+                    </TextBox>
+                </StackPanel>
+                <Button  
+                   Content="Login"
+                   FontFamily="Montserrat"
+                   Foreground="white"
+                   Background="CornflowerBlue"
+                   BorderThickness="0"
+                   Padding="10"
+                   Margin="20">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="7"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <TextBlock Text="Don't have an account?" Foreground="White" HorizontalAlignment="Center"></TextBlock>
+                <Button  
+                   Content="Register now"
+                   FontFamily="Montserrat"
+                   Foreground="white"
+                   Background="#a706c7"
+                   BorderThickness="0"
+                   Padding="10"
+                   Margin="20">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="7"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
+
+        </Border>
+    </Border>
 </Window>
