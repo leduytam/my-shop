@@ -42,7 +42,7 @@
                 <TextBlock Opacity="1" Text="Login" Foreground="White"  FontSize="60" FontFamily="Montserrat" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,50"></TextBlock>
                 <TextBlock Text="Username" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
                 <StackPanel Margin="0,0,0,20" Orientation="Horizontal" Width="250">
-                    <TextBox 
+                    <TextBox
                         materialDesign:HintAssist.Hint="Username"
                         Text="{Binding Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                         Name="Username" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">

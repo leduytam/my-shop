@@ -4,8 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyShop.Views"
+        xmlns:ViewModels="clr-namespace:MyShop.ViewModels"
+        xmlns:Converter="clr-namespace:MyShop.Ultils"
         mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="RegisterWindow" Height="550" Width="800">
+    <Window.DataContext>
+        <ViewModels:RegisterViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <!-- Define the MultiPasswordBoxConverter as a resource -->
+        <Converter:MultiPasswordBoxConverter x:Key="MultiPasswordBoxConverter" />
+    </Window.Resources>
     <Border>
         <Border.Background>
             <ImageBrush ImageSource="/images/general/account.jpg"/>
@@ -37,46 +54,67 @@
                     <StackPanel Width="250" Orientation="Vertical" Margin="0, 35, 0, 0">
                         <TextBlock Text="Username" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
                         <StackPanel Margin="0,0,0,20" Orientation="Horizontal" Width="250">
-                            <TextBox Name="Username" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
+                            <TextBox
+                                materialDesign:HintAssist.Hint="Username"
+                                Text="{Binding Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                Name="Username" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
                             </TextBox>
                         </StackPanel>
                         <TextBlock Text="Password" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
                         <StackPanel Margin="0,0,0,20" Orientation="Horizontal" Width="250">
-                            <TextBox Name="Password" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
-                            </TextBox>
+                            <PasswordBox Name="Password" 
+                                         Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" 
+                                         Background="Transparent" Foreground="White" CaretBrush="LightGray" 
+                                         BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" 
+                                         VerticalContentAlignment="Center" Margin="0,5,0,0"
+                                         PasswordChanged="PasswordBox_PasswordChanged">
+                            </PasswordBox>
                         </StackPanel>
                         <TextBlock Text="Rewrite Password" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
                         <StackPanel Margin="0,0,0,20" Orientation="Horizontal" Width="250">
-                            <TextBox Name="RewritePassword" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
-                            </TextBox>
+                            <PasswordBox 
+                                PasswordChanged="RewritePasswordBox_PasswordChanged"
+                                Name="RewritePassword" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
+                            </PasswordBox>
                         </StackPanel>
                         <TextBlock Text="Address" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
                         <StackPanel Margin="0,0,0,20" Orientation="Horizontal" Width="250">
-                            <TextBox Name="Address" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
+                            <TextBox
+                                materialDesign:HintAssist.Hint="Address"
+                                Text="{Binding Address, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                Name="Address" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
                             </TextBox>
                         </StackPanel>
                         <TextBlock Text="Date of Birth" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
-                        <DatePicker Height="25" HorizontalAlignment="Left" Margin="0,0,0,0" Name="BirthPick" VerticalAlignment="Top" Width="250" />
+                        <DatePicker Name ="BirthPick" SelectedDate="{Binding BirthDate, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Width="250" Orientation="Vertical" Margin="0, 35, 0, 0">
                         <TextBlock Text="Fullname" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
                         <StackPanel Margin="0,0,0,20" Orientation="Horizontal" Width="250">
-                            <TextBox Name="Fullname" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
+                            <TextBox
+                                materialDesign:HintAssist.Hint="Fullname"
+                                Text="{Binding Fullname, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                Name="Fullname" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
                             </TextBox>
                         </StackPanel>
                         <TextBlock Text="Email" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
                         <StackPanel Margin="0,0,0,20" Orientation="Horizontal" Width="250">
-                            <TextBox Name="Email" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,
-0,0">
+                            <TextBox
+                                materialDesign:HintAssist.Hint="Email"
+                                Text="{Binding Email, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                Name="Email" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
                             </TextBox>
                         </StackPanel>
                         <TextBlock Text="Phone Number" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
                         <StackPanel Margin="0,0,0,20" Orientation="Horizontal" Width="250">
-                            <TextBox Name="PhoneNumber" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
+                            <TextBox
+                                materialDesign:HintAssist.Hint="PhoneNumber"
+                                Text="{Binding PhoneNumber, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                Name= "PhoneNumber" Width="250" FontSize="13" FontWeight="Medium" FontFamily="Montserrat" Background="Transparent" Foreground="White" CaretBrush="LightGray" BorderBrush="DarkGray" BorderThickness="0,0,0,5" Height="28" VerticalContentAlignment="Center" Margin="0,5,0,0">
                             </TextBox>
                         </StackPanel>
-                        <TextBlock Text="Genre" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
+                        <TextBlock Text="Genre"  Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"></TextBlock>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -88,24 +126,24 @@
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                                <RadioButton Name="MaleRadio" GroupName="Genre" IsChecked="True" Margin="0,20,10,0">
+                                <RadioButton Name="MaleRadio" GroupName="Genre" IsChecked="{Binding Gender, Mode=OneWayToSource}" Margin="0,20,10,0">
                                     <TextBlock Text="Male" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"/>
                                 </RadioButton>
-                                <RadioButton Name="FemaleRadio" GroupName="Genre" Margin="10,20,0,0">
+                                <RadioButton Name="FemaleRadio" GroupName="Genre" IsChecked="True" Margin="10,20,0,0">
                                     <TextBlock Text="Female" Foreground="White" FontSize="17" FontFamily="Montserrat" FontWeight="Medium"/>
                                 </RadioButton>
                             </StackPanel>
                         </Grid>
                         <Button  
-                   Content="Register"
-                   Width="200"
-                   FontFamily="Montserrat"
-                   Foreground="white"
-                   Background="CornflowerBlue"
-                   BorderThickness="0"
-                   Padding="10"
-                   Margin="20"
-                   Click="Register_Click">
+                       Content="Register"
+                       Width="200"
+                       FontFamily="Montserrat"
+                       Foreground="white"
+                       Background="CornflowerBlue"
+                       BorderThickness="0"
+                       Padding="10"
+                       Margin="20"
+                       Command ="{Binding RegisterCommand}">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="7"/>
@@ -114,7 +152,7 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-                
+
                 <TextBlock MouseLeftButtonDown="Back_Login_Window" Text="Already have an account? Go back" Foreground="White" HorizontalAlignment="Center"></TextBlock>
             </StackPanel>
         </Border>

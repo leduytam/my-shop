@@ -22,7 +22,7 @@ namespace MyShop.ViewModels
 
         public string Username { get => _username; set { _username = value; OnPropertyChanged("Username"); } }
         public string Password { get => _password; set { _password = value; OnPropertyChanged("Password"); } }
-        public ICommand RegisterCommand { get; set; }
+
         public ICommand LoginCommand { get; set; }
 
         public AccountViewModel()
