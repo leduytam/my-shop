@@ -21,40 +21,11 @@ namespace MyShop.Views
     /// </summary>
     public partial class LoginWindow : Window
     {
+        public static LoginWindow login;
         public LoginWindow()
         {
             InitializeComponent();
-        }
-
-        private void Login_Click(object sender, RoutedEventArgs e)
-        {
-            string username = Username.Text;
-            string password = Password.Text;
-
-            using (var db = new MyShopDbContext())
-            {
-                using (SHA512 sha512 = SHA512.Create())
-                {
-                    byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-                    byte[] hashBytes = sha512.ComputeHash(passwordBytes);
-                    string hashString = Convert.ToBase64String(hashBytes);
-                    var account = db.Accounts.FirstOrDefault(a => a.Username == username);
-
-                    if (account != null && account.Password != null && account.Password.SequenceEqual(hashBytes))
-                    {
-                        MessageBox.Show("Đăng nhập thành công");
-                        DashboardWindow dashboardWindow = new DashboardWindow();
-                        dashboardWindow.Show();
-                        this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Đăng nhập không thành công");
-
-                    }
-                }
-            }
-
+            login = this;
         }
         private void Register_Click(object sender, RoutedEventArgs e)
         {

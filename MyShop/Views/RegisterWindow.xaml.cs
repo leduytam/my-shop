@@ -27,15 +27,6 @@ namespace MyShop.Views
             InitializeComponent();
         }
 
-        private void Back_Login_Window(object sender, RoutedEventArgs e)
-        {
-            LoginWindow loginWindow = new LoginWindow();
-            loginWindow.Show();
-            this.Close();
-        }
-
-
-
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             string username = Username.Text;
@@ -65,13 +56,15 @@ namespace MyShop.Views
             if (!IsValidEmail(email)) { return; }
             if (!IsValidPhoneNumber(phone)) { return; }
 
-            AccountViewModel.register()
+            //AccountViewModel.register();
 
         }
 
         private void Back_Login_Window(object sender, MouseButtonEventArgs e)
         {
-
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
+            this.Close();
         }
         private bool checkUsername(string username)
         {
