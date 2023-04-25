@@ -14,7 +14,8 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="LoginWindow" Height="550" Width="800">
+        Title="LoginWindow" Height="550" Width="800"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <ViewModels:AccountViewModel/>
     </Window.DataContext>
