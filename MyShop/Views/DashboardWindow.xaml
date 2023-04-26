@@ -17,7 +17,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-        Title="DashboardWindow" Height="550" Width="800">
+        Title="DashboardWindow" Height="550" Width="850">
     <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect ExpandIn, Duration = 0:0:0.6 }">
         <materialDesign:DialogHost DialogTheme="Inherit">
             <materialDesign:DrawerHost 
@@ -35,7 +35,7 @@
                         DockPanel.Dock="Top"
                         IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}"
                         Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
-                        
+
                         <StackPanel x:Name="SideBarNV" 
                                 DockPanel.Dock="Top"
                                 PreviewMouseLeftButtonUp="SB_OnPreviewMouseLeftButtonUp">
@@ -158,8 +158,7 @@
                     <!-- màn hình làm việc chính-->
                     <Grid>
                         <ContentControl
-                        x:Name="CurView"
-                        Margin="10,0,20,33"/>
+                        x:Name="CurView"/>
                     </Grid>
                 </DockPanel>
 

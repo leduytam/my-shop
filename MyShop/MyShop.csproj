@@ -8,12 +8,53 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\books\ban_dat_gia_bao_nhieu.jpg" />
+    <None Remove="images\books\cang_binh_tinh_cang_hanh_phuc.jpg" />
+    <None Remove="images\books\cang_ky_luat_cang_tu_do.jpg" />
+    <None Remove="images\books\ca_phe_cung_tony.jpg" />
+    <None Remove="images\books\cho_sua_nham_cay.jpg" />
+    <None Remove="images\books\chuyen_tau_mot_chieu_khong_tro_lai.jpg" />
+    <None Remove="images\books\code_dao_ki_su.jpg" />
+    <None Remove="images\books\dac_nhan_tam.jpg" />
+    <None Remove="images\books\dam_bi_ghet.jpg" />
+    <None Remove="images\books\doc_vi_bat_ky_ai.jpg" />
+    <None Remove="images\books\dung_bao_gio_di_an_mot_minh.jpg" />
+    <None Remove="images\books\dung_lua_chon_an_nhan_khi_con_tre.jpg" />
+    <None Remove="images\books\giao_tiep_bat_ky_ai.jpg" />
+    <None Remove="images\books\hanh_tinh_cua_mot_ke_nghi_nhieu.jpg" />
+    <None Remove="images\books\hanh_trinh_ve_phuong_dong.jpg" />
+    <None Remove="images\books\hello_cac_ban_minh_la_toi_di_code_dao.jpg" />
+    <None Remove="images\books\kheo_an_kheo_noi_se_co_duoc_thien_ha.jpg" />
+    <None Remove="images\books\khi_ban_uoc_mo_thi_nguoi_khac_dang_no_luc.jpg" />
+    <None Remove="images\books\khong_diet_khong_sinh_dung_so_hai.jpg" />
+    <None Remove="images\books\luat_hap_dan.jpg" />
+    <None Remove="images\books\luoc_su_loai_nguoi.jpg" />
+    <None Remove="images\books\luoc_su_tuong_lai.jpg" />
+    <None Remove="images\books\mat_biet.jpg" />
+    <None Remove="images\books\mat_day_tam_den.jpg" />
+    <None Remove="images\books\nghe_thuat_tu_duy_ranh_mach.jpg" />
+    <None Remove="images\books\nha_gia_kim.jpg" />
+    <None Remove="images\books\song_thuc_te_giua_cuoc_doi_thuc_dung.jpg" />
+    <None Remove="images\books\suc_manh_tiem_thuc.jpg" />
+    <None Remove="images\books\tam_ly_hoc_ve_tien.jpg" />
+    <None Remove="images\books\thay_doi_cuoc_song_voi_nhan_so_hoc.jpg" />
+    <None Remove="images\books\thoi_nien_thieu_cua_anh_va_em.jpg" />
+    <None Remove="images\books\thuan_thoai_bac_au.jpg" />
+    <None Remove="images\books\toi_tu_hoc.jpg" />
+    <None Remove="images\books\tren_duong_bang.jpg" />
+    <None Remove="images\books\tuoi_tre_dang_gia_bao_nhieu.jpg" />
+    <None Remove="images\books\yeu_nhung_dieu_khong_hoan_hao.jpg" />
     <None Remove="images\general\account.jpg" />
+    <None Remove="images\general\backgroud.jpg" />
     <None Remove="images\general\key.png" />
+    <None Remove="images\general\logo.png" />
+    <None Remove="images\general\slogan.png" />
     <None Remove="images\general\usr.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="EPPlus" Version="6.2.2" />
+    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
     <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
       <PrivateAssets>all</PrivateAssets>
@@ -24,11 +65,125 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="SqlBulkCopyCat" Version="0.2.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="images\books\ban_dat_gia_bao_nhieu.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\cang_binh_tinh_cang_hanh_phuc.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\cang_ky_luat_cang_tu_do.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\ca_phe_cung_tony.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\cho_sua_nham_cay.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\chuyen_tau_mot_chieu_khong_tro_lai.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\code_dao_ki_su.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\dac_nhan_tam.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\dam_bi_ghet.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\doc_vi_bat_ky_ai.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\dung_bao_gio_di_an_mot_minh.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\dung_lua_chon_an_nhan_khi_con_tre.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\giao_tiep_bat_ky_ai.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\hanh_tinh_cua_mot_ke_nghi_nhieu.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\hanh_trinh_ve_phuong_dong.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\hello_cac_ban_minh_la_toi_di_code_dao.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\kheo_an_kheo_noi_se_co_duoc_thien_ha.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\khi_ban_uoc_mo_thi_nguoi_khac_dang_no_luc.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\khong_diet_khong_sinh_dung_so_hai.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\luat_hap_dan.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\luoc_su_loai_nguoi.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\luoc_su_tuong_lai.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\mat_biet.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\mat_day_tam_den.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\nghe_thuat_tu_duy_ranh_mach.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\nha_gia_kim.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\song_thuc_te_giua_cuoc_doi_thuc_dung.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\suc_manh_tiem_thuc.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\tam_ly_hoc_ve_tien.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\thay_doi_cuoc_song_voi_nhan_so_hoc.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\thoi_nien_thieu_cua_anh_va_em.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\thuan_thoai_bac_au.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\toi_tu_hoc.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\tren_duong_bang.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\tuoi_tre_dang_gia_bao_nhieu.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\books\yeu_nhung_dieu_khong_hoan_hao.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="images\general\account.jpg" />
+    <Resource Include="images\general\backgroud.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="images\general\key.png" />
+    <Resource Include="images\general\logo.png" />
+    <Resource Include="images\general\slogan.png" />
     <Resource Include="images\general\usr.png" />
   </ItemGroup>
 
@@ -58,114 +213,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="images\avatars\tmquoc.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\ban_dat_gia_bao_nhieu.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\cang_binh_tinh_cang_hanh_phuc.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\cang_ky_luat_cang_tu_do.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\ca_phe_cung_tony.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\cho_sua_nham_cay.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\chuyen_tau_mot_chieu_khong_tro_lai.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\code_dao_ki_su.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\dac_nhan_tam.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\dam_bi_ghet.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\doc_vi_bat_ky_ai.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\dung_bao_gio_di_an_mot_minh.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\dung_lua_chon_an_nhan_khi_con_tre.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\giao_tiep_bat_ky_ai.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\hanh_tinh_cua_mot_ke_nghi_nhieu.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\hanh_trinh_ve_phuong_dong.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\hello_cac_ban_minh_la_toi_di_code_dao.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\kheo_an_kheo_noi_se_co_duoc_thien_ha.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\khi_ban_uoc_mo_thi_nguoi_khac_dang_no_luc.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\khong_diet_khong_sinh_dung_so_hai.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\luat_hap_dan.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\luoc_su_loai_nguoi.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\luoc_su_tuong_lai.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\mat_biet.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\mat_day_tam_den.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\nghe_thuat_tu_duy_ranh_mach.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\nha_gia_kim.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\song_thuc_te_giua_cuoc_doi_thuc_dung.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\suc_manh_tiem_thuc.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\tam_ly_hoc_ve_tien.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\thay_doi_cuoc_song_voi_nhan_so_hoc.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\thoi_nien_thieu_cua_anh_va_em.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\thuan_thoai_bac_au.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\toi_tu_hoc.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\tren_duong_bang.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\tuoi_tre_dang_gia_bao_nhieu.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="images\books\yeu_nhung_dieu_khong_hoan_hao.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

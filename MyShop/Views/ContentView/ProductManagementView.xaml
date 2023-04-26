@@ -3,11 +3,158 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:ViewModels="clr-namespace:MyShop.ViewModels"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal"
+      TextOptions.TextRenderingMode="Auto"
+      Background="{DynamicResource MaterialDesignPaper}"
+      FontFamily="{DynamicResource MaterialDesignFont}"
       xmlns:local="clr-namespace:MyShop.Views.ContentView"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="550" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <ViewModels:ProductManagementViewModel/>
+    </UserControl.DataContext>
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.Background>
+                <ImageBrush ImageSource="/images/general/backgroud.jpg"/>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="140"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBox
+                Name="Keyword"
+                BorderThickness="2"
+                VerticalAlignment="Top"
+                materialDesign:HintAssist.Hint="Search product"
+                Style="{StaticResource MaterialDesignFilledTextBox}"
+                Text="{Binding Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                TextWrapping="Wrap" />
+                <ComboBox
+                  Grid.Column="1"
+                  Margin="10"
+                  VerticalAlignment="Top"
+                  MinWidth="72"
+                  materialDesign:HintAssist.Hint="Genre"
+                  ItemsSource="{Binding GenreList}"
+                  SelectedValue="{Binding SelectedGenre}" Height="30">
+                    <ComboBox.SelectedItem>
+                        <Binding
+                          Mode="TwoWay"
+                          Path="SelectedValueOne"
+                          UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </ComboBox.SelectedItem>
+                </ComboBox>
+                <Slider
+                Foreground="#583D72"
+                Grid.ColumnSpan="2"
+                Grid.Row="1"
+                Maximum="{Binding MaximumPrice}"
+                Minimum="0"
+                Style="{StaticResource MaterialDesignDiscreteSlider}"
+                TickFrequency="{Binding DiscreteHorizontal.TickFrequency}"
+                Value="{Binding SliderValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+            </Grid>
+            <StackPanel Orientation="Vertical" Margin="3" Grid.Column="1">
+                <Button
+                  Margin="0 0 0 0"
+                  materialDesign:RippleAssist.Feedback="#DD000000"
+                  Content="Import Genre"
+                  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                  Command="{Binding ImportGenreCommand}"
+                  ToolTip="Resource name: MaterialDesignRaisedSecondaryButton"
+                  Background="#B9E9FC"/>
+                <Button
+                  Margin="0 0 0 0"
+                  materialDesign:RippleAssist.Feedback="#DD000000"
+                  Content="Import Product"
+                  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                  Command="{Binding ImportCommand}"
+                  ToolTip="Resource name: MaterialDesignRaisedSecondaryButton"
+                  Background="#B9E9FC"/>
+                <Button
+                  Margin="0 0 0 0"
+                  materialDesign:RippleAssist.Feedback="#DD000000"
+                  Content="Genre List"
+                  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                  ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" 
+                  Background="#B9E9FC"/>
 
-    <Grid>
-        <TextBlock>Product</TextBlock>
-    </Grid>
+                <Button
+                  Margin="0 0 0 0"
+                  materialDesign:RippleAssist.Feedback="#DD000000"
+                  Content="Add new book"
+                  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                  ToolTip="Resource name: MaterialDesignRaisedSecondaryButton"
+                  Background="#B9E9FC"/>
+
+
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="2">
+                <StackPanel Margin="0, 20, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Command ="{Binding FirstPageCommand}" Width="100" Height="25" Content="First" Margin="5"
+                        Background="#B9E9FC"></Button>
+                    <Button Name ="Prev" Command ="{Binding PreviousPageCommand}" Width="100" Height="25" Content="Previous" Margin="5"
+                        Background="#B9E9FC" ></Button>
+                    <Button Width="50" Height="25" Content="{Binding PageItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5"
+                        Background="#B9E9FC"></Button>
+                    <Button Command ="{Binding NextPageCommand}" Width="100" Height="25" Content="Next" Margin="5"
+                        Background="#B9E9FC"></Button>
+                    <Button Command ="{Binding LastPageCommand}" Width="100" Height="25" Content="Last"
+                        Background="#B9E9FC"></Button>
+
+                </StackPanel>
+                <Grid Background="White" Margin="5">
+                    <Grid.OpacityMask>
+                        <VisualBrush Visual="{ Binding ElementName=BorderG1 }"/>
+                    </Grid.OpacityMask>
+                    <Border x:Name="BorderG1" CornerRadius="5" Background="#F6F1F1">
+                        <ListView ItemsSource="{Binding ListProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Image" Width="Auto">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image Source="{Binding Image}" Width="50" Height="50" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="130" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding Author}" Header="Author" Width="Auto" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding Publisher}" Header="Publisher" Width="Auto" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding PublicationYear}" Header="Year Release" Width="Auto" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding Quantity}" Header="Quantity" Width="Auto" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding Price}" Header="Price" Width="Auto" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding OriginalPrice}" Header="OriginalPrice" Width="Auto" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding CreatedAt}" Header="Created At" Width="Auto" />
+                                    <GridViewColumn DisplayMemberBinding="{Binding UpdatedAt}" Header="Updated At" Width="Auto" />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
