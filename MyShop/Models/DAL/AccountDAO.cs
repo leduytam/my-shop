@@ -11,11 +11,10 @@ namespace MyShop.Models.DAL
         private MyShopDbContext dbContext = new MyShopDbContext();
         public List<Account> GetAllAccounts()
         {
-            return dbContext.Accounts.ToList(); // Retrieve all books that are not deleted
+            return dbContext.Accounts.ToList();
         }
         public bool AddAccount(Account account)
         {
-            // Check if an account with the same username already exists
             if (dbContext.Accounts.Any(a => a.Username == account.Username))
             {
                 return false;

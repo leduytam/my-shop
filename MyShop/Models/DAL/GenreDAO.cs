@@ -60,19 +60,18 @@ namespace MyShop.Models.DAL
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
                 if (worksheet != null)
                 {
-                    int rowCount = worksheet.Dimension.Rows;
+                    int rowCount = worksheet.Dimension.End.Row;
                     List<Genre> genres = new List<Genre>();
-
-                    // Read data from Excel file
-                    for (int row = 2; row <= 3; row++)
+                    for (int row = 2; row <= rowCount; row++)
                     {
+                        if (worksheet.Cells[row, 2].Value?.ToString() == null) { break; }
+
                         DateTime? createdAt = worksheet.Cells[row, 4].Value != null ? DateTime.Parse(worksheet.Cells[row, 4].Value.ToString()) : null;
 
                         DateTime? updatedAt = worksheet.Cells[row, 5].Value != null ? DateTime.Parse(worksheet.Cells[row, 5].Value.ToString()) : null;
 
                         bool isDeleted = (worksheet.Cells[row, 6].Value?.ToString() == "0");
-                        MessageBox.Show(worksheet.Cells[row, 2].Value?.ToString());
-
+                        
                         genres.Add(new Genre
                         {
                             Id = Guid.Parse(worksheet.Cells[row, 1].Value?.ToString()),
@@ -83,38 +82,22 @@ namespace MyShop.Models.DAL
                             IsDeleted = isDeleted
                         });
                     }
-
-                    //MessageBox.Show(genres[0].Name);
-                    //MessageBox.Show(genres[1].Name);
-                    //using (MyShopDbContext context = new MyShopDbContext())
-                    //{
-                    //    context.Genres.RemoveRange(context.Genres);
-                    //    context.SaveChanges();
-                    //}
-                    // Add new genres to the database
                     using (MyShopDbContext context = new MyShopDbContext())
                     {
-                        //var bookGenres = context.BookGenres.Where(bg => genres.Any(g => g.Id == bg.GenreId)).ToList();
-                        //context.RemoveRange(bookGenres);
-                        // Remove all existing genres
-                        //var existingGenres = context.Genres.ToList();
-                        //context.RemoveRange(existingGenres);
-
-                        // Add new genres
                         foreach (Genre genre in genres)
                         {
-                            MessageBox.Show(genre.Name);
                             context.Genres.Add(new Genre
                             {
-                                Id = genre.Id,
-                                Name = genre.Name,
-                                Description = genre.Description,
+                                Id = Guid.NewGuid(),
+                                Name = genre.Name.Trim(),
+                                Description = genre.Description.Trim(),
                                 CreatedAt = genre.CreatedAt,
                                 UpdatedAt = genre.UpdatedAt,
-                                IsDeleted = genre.IsDeleted
+                                IsDeleted = !genre.IsDeleted
                             });
                         }
                         context.SaveChanges();
+                        MessageBox.Show("Import Successfully");
                     }
 
                 }

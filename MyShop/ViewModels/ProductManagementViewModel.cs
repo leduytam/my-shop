@@ -79,6 +79,7 @@ namespace MyShop.ViewModels
         public ICommand PreviousPageCommand { get; set; }
         public ICommand NextPageCommand { get; set; }
         public ICommand ImportGenreCommand { get; set; }
+        public ICommand ImportBookCommand { get; set; }
 
         public List<Book> FiltedBooks(string keyword, int currentPage, string genre, decimal maxPrice)
         {
@@ -163,6 +164,20 @@ namespace MyShop.ViewModels
                     _genreDao.ImportGenresFromExcel(filePath);
                 }
 
+            });
+            ImportBookCommand = new RelayCommand<Button>(p =>
+            {
+                var openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Excel Files (*.xlsx, *.xls)|*.xlsx;*.xls";
+                openFileDialog.FilterIndex = 0;
+                openFileDialog.Multiselect = false;
+
+                bool? result = openFileDialog.ShowDialog();
+                if (result == true)
+                {
+                    string filePath = openFileDialog.FileName;
+                    _bookDao.ImportBooksFromExcel(filePath);
+                }
             });
         }
     }

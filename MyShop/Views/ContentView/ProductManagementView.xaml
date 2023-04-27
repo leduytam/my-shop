@@ -90,7 +90,7 @@
                   materialDesign:RippleAssist.Feedback="#DD000000"
                   Content="Import Product"
                   IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                  Command="{Binding ImportCommand}"
+                  Command="{Binding ImportBookCommand}"
                   ToolTip="Resource name: MaterialDesignRaisedSecondaryButton"
                   Background="#B9E9FC"/>
                 <Button
