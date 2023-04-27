@@ -41,7 +41,8 @@ namespace MyShop.Models.DAL
             var genre = _dbContext.Genres.FirstOrDefault(g => g.Id == id);
             if (genre != null)
             {
-                _dbContext.Genres.Remove(genre);
+                genre.IsDeleted = true;
+                genre.UpdatedAt = DateTime.Now;
                 _dbContext.SaveChanges();
             }
         }

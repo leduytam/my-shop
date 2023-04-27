@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyShop.Views.ModalView"
         mc:Ignorable="d"
-        Title="ListGenreWindow" Height="450" Width="900"
+        Title="ListGenreWindow" Height="450" Width="950"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:ViewModels="clr-namespace:MyShop.ViewModels"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -21,13 +21,20 @@
     <ScrollViewer>
         <StackPanel Orientation="Vertical">
             <TextBlock Text="Danh sách thể loại" HorizontalAlignment="Center" FontSize="30" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
-            <ListView ItemsSource="{Binding ListGenre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListView Name="ListViewName" ItemsSource="{Binding ListGenre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="Auto" />
                         <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Description" Width="400" />
                         <GridViewColumn DisplayMemberBinding="{Binding CreatedAt}" Header="CreatedAt" Width="Auto" />
                         <GridViewColumn DisplayMemberBinding="{Binding UpdatedAt}" Header="UpdatedAt" Width="Auto" />
+                        <GridViewColumn Header="Actions">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Delete" Command="{Binding ElementName=ListViewName, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </GridView>
                 </ListView.View>
             </ListView>

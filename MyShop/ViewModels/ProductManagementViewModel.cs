@@ -203,7 +203,8 @@ namespace MyShop.ViewModels
             {
                 if (book != null)
                 {
-                    MessageBox.Show(book.Name);
+                    BookInfoWindow bookInfoWindow = new BookInfoWindow(book);
+                    bookInfoWindow.ShowDialog();
                 }
             });
             DeleteCommand = new RelayCommand<Book>(book =>

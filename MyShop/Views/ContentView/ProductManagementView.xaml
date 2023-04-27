@@ -148,13 +148,6 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Header="Actions">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Button Content="Delete" Command="{Binding ElementName=ListViewName, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
                                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="130" />
                                     <GridViewColumn DisplayMemberBinding="{Binding Author}" Header="Author" Width="Auto" />
                                     <GridViewColumn DisplayMemberBinding="{Binding Publisher}" Header="Publisher" Width="Auto" />
@@ -164,6 +157,13 @@
                                     <GridViewColumn DisplayMemberBinding="{Binding OriginalPrice}" Header="OriginalPrice" Width="Auto" />
                                     <GridViewColumn DisplayMemberBinding="{Binding CreatedAt}" Header="Created At" Width="Auto" />
                                     <GridViewColumn DisplayMemberBinding="{Binding UpdatedAt}" Header="Updated At" Width="Auto" />
+                                    <GridViewColumn Header="Actions">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Delete" Command="{Binding ElementName=ListViewName, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
                                 </GridView>
                             </ListView.View>
                         </ListView>
