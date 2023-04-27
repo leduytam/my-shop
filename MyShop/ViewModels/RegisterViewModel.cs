@@ -80,7 +80,8 @@ namespace MyShop.ViewModels
                     DateOfBirth = BirthDate,
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    Avatar = "images/avatars/nvphong.png"
                 };
                 if (_accountDao.AddAccount(account))
                 {

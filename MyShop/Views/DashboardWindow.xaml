@@ -15,26 +15,155 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        
-        Title="DashboardWindow" Height="550" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-        </Grid>
-        <Grid Grid.Row="1">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-            </Grid>
-        </Grid>
-    </Grid>
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Title="DashboardWindow" Height="550" Width="850">
+    <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect ExpandIn, Duration = 0:0:0.6 }">
+        <materialDesign:DialogHost DialogTheme="Inherit">
+            <materialDesign:DrawerHost 
+            OpenMode="Model"
+            IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}"
+            LeftDrawerCornerRadius="0 20 20 0">
+                <!-- bảng sidebar bên trái -->
+                <materialDesign:DrawerHost.LeftDrawerContent >
+
+                    <DockPanel Width="200" Background="{StaticResource PrimaryHueLightBrush}">
+                        <!-- nút đóng sidabar -->
+                        <ToggleButton
+                        Margin="16"
+                        HorizontalAlignment="Left"
+                        DockPanel.Dock="Top"
+                        IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}"
+                        Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
+
+                        <StackPanel x:Name="SideBarNV" 
+                                DockPanel.Dock="Top"
+                                PreviewMouseLeftButtonUp="SB_OnPreviewMouseLeftButtonUp">
+                            <Button
+                            Margin="0 2 0 2"
+                            Style="{StaticResource MaterialDesignRaisedLightButton}"
+                            Click="NavigateOrderManagementView"
+                            Content="Order Management">
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cart" Margin="0 0 5 0" />
+                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+                            <Button
+                            Margin="0 2 0 2"
+                            Style="{StaticResource MaterialDesignRaisedLightButton}"
+                            Click="NavigateProductManagementView"
+                            Content="Product Management">
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cart" Margin="0 0 5 0" />
+                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+                            <Button
+                            Margin="0 2 0 2"
+                            Style="{StaticResource MaterialDesignRaisedLightButton}"
+                            Click="NavigateRevenueReportView"
+                            Content="Revenue Report">
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cart" Margin="0 0 5 0" />
+                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+                            <Button
+                            Margin="0 2 0 2"
+                            Style="{StaticResource MaterialDesignRaisedLightButton}"
+                            Click="NavigateStatisticsReport"
+                            Content="Statistics Report">
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cart" Margin="0 0 5 0" />
+                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+                            <Button
+                            Margin="0 2 0 2"
+                            Style="{StaticResource MaterialDesignRaisedLightButton}"
+                            Command="{Binding Logout}"
+                            Content="Logout">
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cart" Margin="0 0 5 0" />
+                                            <TextBlock Text="{Binding}" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+                        </StackPanel>
+                    </DockPanel>
+                </materialDesign:DrawerHost.LeftDrawerContent>
+
+                <DockPanel>
+                    <!-- thanh controlbar bên trên -->
+                    <materialDesign:ColorZone
+                    MouseDown="Main_W_MouseDown"
+                    Mode="PrimaryLight"
+                    Padding="10"
+                    DockPanel.Dock="Top">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <ToggleButton
+                                x:Name="MenuToggleButton"
+                                IsChecked="False"
+                                Style="{StaticResource MaterialDesignHamburgerToggleButton}"/>
+                                <Button
+                                Click="NavigateHomeView"
+                                Margin="30,0,0,0"
+                                Content="{materialDesign:PackIcon Kind=Home, Size=30}"
+                                Style="{StaticResource MaterialDesignToolForegroundButton}"/>
+                            </StackPanel>
+                            <StackPanel
+                            Orientation="Horizontal"
+                            DockPanel.Dock="Right">
+                                <Button
+                                Content="{materialDesign:PackIcon Kind=Minimize}"
+                                Style="{StaticResource MaterialDesignPaperLightButton}" Click="miniW_btn" />
+                                <Button
+                                Margin="4 0 4 0"
+                                Content="{materialDesign:PackIcon Kind=Maximize}"
+                                Style="{StaticResource MaterialDesignPaperLightButton}" Click="maxW_btn" />
+                                <Button
+                                Content="{materialDesign:PackIcon Kind=Close}"
+                                Style="{StaticResource MaterialDesignPaperLightButton}" Click="closeW_btn" />
+
+                            </StackPanel>
+                            <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="25"
+                            Text="My Shop"/>
+                        </DockPanel>
+                    </materialDesign:ColorZone>
+
+                    <!-- màn hình làm việc chính-->
+                    <Grid>
+                        <ContentControl
+                        x:Name="CurView"/>
+                    </Grid>
+                </DockPanel>
+
+            </materialDesign:DrawerHost>
+        </materialDesign:DialogHost>
+
+    </materialDesign:TransitioningContent>
 </Window>

@@ -14,7 +14,9 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="LoginWindow" Height="550" Width="800">
+        Title="LoginWindow" Height="550" Width="800"
+        Loaded="Window_Loaded"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <ViewModels:AccountViewModel/>
     </Window.DataContext>
@@ -72,6 +74,7 @@
                         </Style>
                     </Button.Resources>
                 </Button>
+                <CheckBox Name="RememberMe" IsChecked="{Binding RememberMe, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,20">Remember me?</CheckBox>
                 <TextBlock Text="Don't have an account?" Foreground="White" HorizontalAlignment="Center"></TextBlock>
                 <Button  
                    Content="Register now"

@@ -1,24 +1,11 @@
-﻿using MyShop.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.Configuration;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MyShop.Views
 {
-    /// <summary>
-    /// Interaction logic for LoginWindow.xaml
-    /// </summary>
     public partial class LoginWindow : Window
     {
         public static LoginWindow login;
@@ -32,6 +19,28 @@ namespace MyShop.Views
             RegisterWindow registerWindow = new RegisterWindow();
             registerWindow.Show();
             this.Close();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string username = ConfigurationManager.AppSettings["Username"]!;
+            string passwordIn64 = ConfigurationManager.AppSettings["Password"]!;
+            string entropyIn64 = ConfigurationManager.AppSettings["Entropy"]!;
+            if (passwordIn64.Length != 0)
+            {
+                byte[] entropyInBytes = Convert.FromBase64String(entropyIn64);
+                byte[] cypherTextInBytes = Convert.FromBase64String(passwordIn64);
+                byte[] passwordInBytes = ProtectedData.Unprotect(cypherTextInBytes,
+                    entropyInBytes,
+                    DataProtectionScope.CurrentUser
+                );
+
+                string password = Encoding.UTF8.GetString(passwordInBytes);
+
+                Username.Text = username;
+                Password.Password = password;
+                RememberMe.IsChecked = true;
+            }
         }
     }
 }

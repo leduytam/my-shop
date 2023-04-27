@@ -15,7 +15,8 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="RegisterWindow" Height="550" Width="800">
+        Title="RegisterWindow" Height="550" Width="800"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <ViewModels:RegisterViewModel/>
     </Window.DataContext>
