@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyShop.Views"
-        xmlns:ViewModels="clr-namespace:MyShop.ViewModels"
-        xmlns:Converter="clr-namespace:MyShop.Ultils"
+        
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -16,12 +15,13 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="RegisterWindow" Height="550" Width="800"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        xmlns:ViewModels="clr-namespace:MyShop.ViewModels"
+        xmlns:Converter="clr-namespace:MyShop.Ultils">
     <Window.DataContext>
         <ViewModels:RegisterViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <!-- Define the MultiPasswordBoxConverter as a resource -->
         <Converter:MultiPasswordBoxConverter x:Key="MultiPasswordBoxConverter" />
     </Window.Resources>
     <Border>

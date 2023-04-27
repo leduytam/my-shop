@@ -49,7 +49,9 @@ namespace MyShop.Models.DAL
             var book = dbContext.Books.FirstOrDefault(b => b.Id == id);
             if (book != null)
             {
+
                 book.IsDeleted = true;
+                book.UpdatedAt = DateTime.UtcNow;
                 dbContext.SaveChanges();
             }
         }
