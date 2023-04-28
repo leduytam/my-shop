@@ -31,7 +31,18 @@ namespace MyShop.ViewModels
         private string _genre = "";
         private decimal _curPrice = 0;
         private int _maximumPrice = 500000;
+        private string _backGroundPath = "/images/general/background.jpg";
+        public string BackGroundPath
+        {
+            get { return _backGroundPath; }
+            set
+            {
 
+                _backGroundPath = value;
+                OnPropertyChanged(nameof(BackGroundPath));
+
+            }
+        }
         public List<Book> books = new List<Book>();
         public List<Book> showBooks = new List<Book>();
         public List<Book> ListProduct { get => showBooks; set { showBooks = value; OnPropertyChanged("ListProduct"); } }

@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:ViewModels="clr-namespace:MyShop.ViewModels"
+      xmlns:converter="clr-namespace:MyShop.Ultils"
       xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
       TextElement.FontWeight="Regular"
@@ -19,10 +20,13 @@
     <UserControl.DataContext>
         <ViewModels:ProductManagementViewModel/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <converter:RelativeToAbsolute x:Key="absoluteConverter"/>
+    </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="/images/general/backgroud.jpg"/>
+                <ImageBrush ImageSource="{Binding Path=BackGroundPath, Converter={StaticResource absoluteConverter}}"/>
             </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -144,7 +148,7 @@
                                     <GridViewColumn Header="Image" Width="Auto">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Image Source="{Binding Image}" Width="50" Height="50" />
+                                                <Image Source="{Binding Image, Converter={StaticResource absoluteConverter}}" Width="50" Height="50" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>

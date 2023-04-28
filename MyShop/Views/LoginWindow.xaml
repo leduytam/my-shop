@@ -16,14 +16,17 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="LoginWindow" Height="550" Width="800"
         Loaded="Window_Loaded"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        xmlns:converter="clr-namespace:MyShop.Ultils">
+    <Window.Resources>
+        <converter:RelativeToAbsolute x:Key="absoluteConverter"/>
+    </Window.Resources>
     <Window.DataContext>
         <ViewModels:AccountViewModel/>
     </Window.DataContext>
     <Border>
         <Border.Background>
-            <ImageBrush ImageSource="/images/general/account.jpg"/>
-
+            <ImageBrush ImageSource="{Binding Path=BackGroundPath, Converter={StaticResource absoluteConverter}}"/>
         </Border.Background>
         <Border BorderThickness="5" RenderTransformOrigin="0.500,0.900" Opacity="0.9">
             <Border.BorderBrush>

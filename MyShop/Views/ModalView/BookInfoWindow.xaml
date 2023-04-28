@@ -14,12 +14,15 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
+        xmlns:converter="clr-namespace:MyShop.Ultils"
         Title="BookInfoWindow" Height="450" Width="800">
-    <!--<Window.DataContext>
+    <Window.Resources>
+        <converter:RelativeToAbsolute x:Key="absoluteConverter"/>
+    </Window.Resources>
+    <Window.DataContext>
         <ViewModels:BookInfoViewModel/>
-    </Window.DataContext>-->
-    <StackPanel Orientation="Vertical">
-        <Image Source="{Binding Book.Image}" Width="100" Height="150" Margin ="5"/>
+    </Window.DataContext>
+    <ScrollViewer>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -37,35 +40,36 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="400"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
+            
             <TextBlock Margin ="10" Grid.Row="0" Grid.Column="0" Text="Name: "/>
-            <TextBlock Margin ="10" Grid.Row="0" Grid.Column="1" Text="{Binding Book.Name}"/>
+            <TextBox Margin ="10" Grid.Row="0" Grid.Column="1" Text="{Binding Book.Name}"/>
 
             <TextBlock Margin ="10" Grid.Row="1" Grid.Column="0" Text="Author: "/>
-            <TextBlock Margin ="10" Grid.Row="1" Grid.Column="1" Text="{Binding Book.Author}"/>
+            <TextBox Margin ="10" Grid.Row="1" Grid.Column="1" Text="{Binding Book.Author}"/>
 
             <TextBlock Margin ="10" Grid.Row="2" Grid.Column="0" Text="Publisher: "/>
-            <TextBlock Margin ="10" Grid.Row="2" Grid.Column="1" Text="{Binding Book.Publisher}"/>
+            <TextBox Margin ="10" Grid.Row="2" Grid.Column="1" Text="{Binding Book.Publisher}"/>
 
             <TextBlock Margin ="10" Grid.Row="3" Grid.Column="0" Text="ISBN: "/>
-            <TextBlock Margin ="10" Grid.Row="3" Grid.Column="1" Text="{Binding Book.Isbn}"/>
+            <TextBox Margin ="10" Grid.Row="3" Grid.Column="1" Text="{Binding Book.Isbn}"/>
 
             <TextBlock Margin ="10" Grid.Row="4" Grid.Column="0" Text="Price: "/>
-            <TextBlock Margin ="10" Grid.Row="4" Grid.Column="1" Text="{Binding Book.Price}"/>
+            <TextBox Margin ="10" Grid.Row="4" Grid.Column="1" Text="{Binding Book.Price}"/>
 
             <TextBlock Margin ="10" Grid.Row="5" Grid.Column="0" Text="Original Price: "/>
-            <TextBlock Margin ="10" Grid.Row="5" Grid.Column="1" Text="{Binding Book.OriginalPrice}"/>
+            <TextBox Margin ="10" Grid.Row="5" Grid.Column="1" Text="{Binding Book.OriginalPrice}"/>
 
             <TextBlock Margin ="10" Grid.Row="6" Grid.Column="0" Text="Discount: "/>
-            <TextBlock Margin ="10" Grid.Row="6" Grid.Column="1" Text="{Binding Book.Discount}"/>
+            <TextBox Margin ="10" Grid.Row="6" Grid.Column="1" Text="{Binding Book.Discount}"/>
 
             <TextBlock Margin ="10" Grid.Row="7" Grid.Column="0" Text="Quantity: "/>
-            <TextBlock Margin ="10" Grid.Row="7" Grid.Column="1" Text="{Binding Book.Quantity}"/>
+            <TextBox Margin ="10" Grid.Row="7" Grid.Column="1" Text="{Binding Book.Quantity}"/>
 
             <TextBlock Margin ="10" Grid.Row="8" Grid.Column="0" Text="Publication Year: "/>
-            <TextBlock Margin ="10" Grid.Row="8" Grid.Column="1" Text="{Binding Book.PublicationYear}"/>
+            <TextBox Margin ="10" Grid.Row="8" Grid.Column="1" Text="{Binding Book.PublicationYear}"/>
 
             <TextBlock Margin ="10" Grid.Row="9" Grid.Column="0" Text="Created At: "/>
             <TextBlock Margin ="10" Grid.Row="9" Grid.Column="1" Text="{Binding Book.CreatedAt}"/>
@@ -73,7 +77,15 @@
             <TextBlock Margin ="10" Grid.Row="10" Grid.Column="0" Text="Updated At: "/>
             <TextBlock Margin ="10" Grid.Row="10" Grid.Column="1" Text="{Binding Book.UpdatedAt}"/>
 
-            <Button Grid.Row="11" Grid.Column="1" Content="Close" HorizontalAlignment="Right" Margin="5"/>
+            <StackPanel Orientation="Horizontal" Grid.Row="11" Grid.Column="2">
+                <Button Content="Save" Margin="5" Command="{Binding SaveCommand}"/>
+                <Button Content="Close" Margin="5"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="2" Grid.RowSpan="11">
+                <Image Name="Image"  Source="{Binding Book.Image, Converter={StaticResource absoluteConverter}}" Width="200" Height="350" Margin ="5"/>
+                <Button Content="Browse" Command="{Binding BrowseImageCommand}" CommandParameter="{Binding ElementName = Image }"></Button>
+            </StackPanel>
         </Grid>
-    </StackPanel>
+    </ScrollViewer>
 </Window>
