@@ -93,5 +93,17 @@ namespace MyShop.Views
             StatisticsReportView homeView = new StatisticsReportView();
             this.CurView.Content = homeView;
         }
+
+        private void NavigateCustomerManagement(object sender, RoutedEventArgs e)
+        {
+            CustomerView customerView = new CustomerView();
+            this.CurView.Content = customerView;
+        }
+
+        private void NavigateTrendingProduct(object sender, RoutedEventArgs e)
+        {
+            TrendingProductView homeView = new TrendingProductView();
+            this.CurView.Content = homeView;
+        }
     }
 }

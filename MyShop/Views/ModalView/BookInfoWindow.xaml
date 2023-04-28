@@ -15,7 +15,8 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         xmlns:converter="clr-namespace:MyShop.Ultils"
-        Title="BookInfoWindow" Height="450" Width="800">
+        Title="BookInfoWindow" Height="450" Width="800"
+        Closing="Window_Closing">
     <Window.Resources>
         <converter:RelativeToAbsolute x:Key="absoluteConverter"/>
     </Window.Resources>
@@ -45,45 +46,48 @@
             </Grid.ColumnDefinitions>
             
             <TextBlock Margin ="10" Grid.Row="0" Grid.Column="0" Text="Name: "/>
-            <TextBox Margin ="10" Grid.Row="0" Grid.Column="1" Text="{Binding Book.Name}"/>
+            <TextBox Margin ="10" Grid.Row="0" Grid.Column="1" Text="{Binding Book.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Margin ="10" Grid.Row="1" Grid.Column="0" Text="Author: "/>
-            <TextBox Margin ="10" Grid.Row="1" Grid.Column="1" Text="{Binding Book.Author}"/>
+            <TextBox Margin ="10" Grid.Row="1" Grid.Column="1" Text="{Binding Book.Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Margin ="10" Grid.Row="2" Grid.Column="0" Text="Publisher: "/>
-            <TextBox Margin ="10" Grid.Row="2" Grid.Column="1" Text="{Binding Book.Publisher}"/>
+            <TextBox Margin ="10" Grid.Row="2" Grid.Column="1" Text="{Binding Book.Publisher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Margin ="10" Grid.Row="3" Grid.Column="0" Text="ISBN: "/>
-            <TextBox Margin ="10" Grid.Row="3" Grid.Column="1" Text="{Binding Book.Isbn}"/>
+            <TextBox Margin ="10" Grid.Row="3" Grid.Column="1" Text="{Binding Book.Isbn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Margin ="10" Grid.Row="4" Grid.Column="0" Text="Price: "/>
-            <TextBox Margin ="10" Grid.Row="4" Grid.Column="1" Text="{Binding Book.Price}"/>
+            <TextBox Margin ="10" Grid.Row="4" Grid.Column="1" Text="{Binding Book.Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Margin ="10" Grid.Row="5" Grid.Column="0" Text="Original Price: "/>
-            <TextBox Margin ="10" Grid.Row="5" Grid.Column="1" Text="{Binding Book.OriginalPrice}"/>
+            <TextBox Margin ="10" Grid.Row="5" Grid.Column="1" Text="{Binding Book.OriginalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Margin ="10" Grid.Row="6" Grid.Column="0" Text="Discount: "/>
-            <TextBox Margin ="10" Grid.Row="6" Grid.Column="1" Text="{Binding Book.Discount}"/>
+            <TextBox Margin ="10" Grid.Row="6" Grid.Column="1" Text="{Binding Book.Discount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Margin ="10" Grid.Row="7" Grid.Column="0" Text="Quantity: "/>
-            <TextBox Margin ="10" Grid.Row="7" Grid.Column="1" Text="{Binding Book.Quantity}"/>
+            <TextBox Margin ="10" Grid.Row="7" Grid.Column="1" Text="{Binding Book.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <TextBlock Margin ="10" Grid.Row="8" Grid.Column="0" Text="Publication Year: "/>
-            <TextBox Margin ="10" Grid.Row="8" Grid.Column="1" Text="{Binding Book.PublicationYear}"/>
+            <TextBox Margin ="10" Grid.Row="8" Grid.Column="1" Text="{Binding Book.PublicationYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <TextBlock Margin ="10" Grid.Row="9" Grid.Column="0" Text="Created At: "/>
-            <TextBlock Margin ="10" Grid.Row="9" Grid.Column="1" Text="{Binding Book.CreatedAt}"/>
+            <TextBlock Margin ="10" Grid.Row="9" Grid.Column="0" Text="Description: "/>
+            <TextBox Margin ="10" Grid.Row="9" Grid.Column="1" Text="{Binding Book.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            
+            <TextBlock Margin ="10" Grid.Row="10" Grid.Column="0" Text="Created At: "/>
+            <TextBlock Margin ="10" Grid.Row="10" Grid.Column="1" Text="{Binding Book.CreatedAt}"/>
 
-            <TextBlock Margin ="10" Grid.Row="10" Grid.Column="0" Text="Updated At: "/>
-            <TextBlock Margin ="10" Grid.Row="10" Grid.Column="1" Text="{Binding Book.UpdatedAt}"/>
+            <TextBlock Margin ="10" Grid.Row="11" Grid.Column="0" Text="Updated At: "/>
+            <TextBlock Margin ="10" Grid.Row="11" Grid.Column="1" Text="{Binding Book.UpdatedAt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="11" Grid.Column="2">
+            <StackPanel Orientation="Horizontal" Grid.Row="12" Grid.Column="2">
                 <Button Content="Save" Margin="5" Command="{Binding SaveCommand}"/>
                 <Button Content="Close" Margin="5"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="2" Grid.RowSpan="11">
-                <Image Name="Image"  Source="{Binding Book.Image, Converter={StaticResource absoluteConverter}}" Width="200" Height="350" Margin ="5"/>
+                <Image Name="Image" Source="{Binding Book.Image, Converter={StaticResource absoluteConverter}}" Width="200" Height="350" Margin ="5"/>
                 <Button Content="Browse" Command="{Binding BrowseImageCommand}" CommandParameter="{Binding ElementName = Image }"></Button>
             </StackPanel>
         </Grid>

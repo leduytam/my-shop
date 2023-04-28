@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using static OfficeOpenXml.ExcelErrorValue;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MyShop.ViewModels
@@ -96,6 +97,8 @@ namespace MyShop.ViewModels
         }
         public int PageItems { get => _curPage; set { _curPage = value; OnPropertyChanged("PageItems"); } }
 
+        public void UpdateBooks() { ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, _curPrice); }
+
         public ICommand FirstPageCommand { get; set; }
         public ICommand LastPageCommand { get; set; }
         public ICommand PreviousPageCommand { get; set; }
@@ -105,6 +108,8 @@ namespace MyShop.ViewModels
         public ICommand ShowListGenre { get; set; }
         public ICommand SelectCommand { get; set; }
         public ICommand DeleteCommand { get;set; }
+        public ICommand RefreshList { get; set; }
+        public ICommand AddBook { get; set; }
         public List<Book> FiltedBooks(string keyword, int currentPage, string genre, decimal maxPrice)
         {
             IEnumerable<Book> list;
@@ -226,6 +231,16 @@ namespace MyShop.ViewModels
                 _curPage = 0;
                 ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, _curPrice);
                 PageItems = _curPage;
+            });
+            RefreshList = new RelayCommand<object>(p =>
+            {
+                ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, _curPrice);
+                MessageBox.Show("Data was refreshed");
+            });
+            AddBook = new RelayCommand<object>(p =>
+            {
+                BookInfoWindow bookInfoWindow = new BookInfoWindow();
+                bookInfoWindow.ShowDialog();
             });
         }
     }
