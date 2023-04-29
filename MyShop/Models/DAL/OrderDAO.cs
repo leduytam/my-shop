@@ -76,5 +76,65 @@ namespace MyShop.Models.DAL
             DateTime endOfMonth = startOfMonth.AddMonths(1).AddDays(-1); // Calculate the end of the current month
             return _dbContext.Orders.Count(o => o.CreatedAt >= startOfMonth && o.CreatedAt <= endOfMonth); // Retrieve the count of orders that were created within the current month
         }
+        public List<double> GetRevenueLast7Days()
+        {
+            DateTime endDate = DateTime.UtcNow.Date; // Get the current UTC date
+            DateTime startDate = endDate.AddDays(-7); // Calculate the start date 7 days ago
+
+            List<double> revenueList = new List<double>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                DateTime date = endDate.AddDays(-i); // Calculate the date for each of the past 7 days
+                decimal revenue = _dbContext.Orders
+                    .Where(o => o.Status == "delivered" && o.UpdatedAt.Date == date)
+                    .SelectMany(o => o.OrderItems)
+                    .Sum(oi => oi.Price * oi.Quantity); // Calculate the revenue for the day
+
+                revenueList.Insert(0, (double)revenue); // Insert the revenue at the beginning of the list
+            }
+
+            return revenueList;
+        }
+        public List<double> GetRevenueLast30Days()
+        {
+            DateTime endDate = DateTime.UtcNow.Date; // Get the current UTC date
+            DateTime startDate = endDate.AddDays(-30); // Calculate the start date 30 days ago
+
+            List<double> revenueList = new List<double>();
+
+            for (int i = 0; i < 30; i++)
+            {
+                DateTime date = endDate.AddDays(-i); // Calculate the date for each of the past 30 days
+                decimal revenue = _dbContext.Orders
+                    .Where(o => o.Status == "delivered" && o.UpdatedAt.Date == date)
+                    .SelectMany(o => o.OrderItems)
+                    .Sum(oi => oi.Price * oi.Quantity); // Calculate the revenue for the day
+
+                revenueList.Insert(0, (double)revenue); // Insert the revenue at the beginning of the list
+            }
+
+            return revenueList;
+        }
+        public List<double> GetRevenueLastYear()
+        {
+            DateTime endDate = DateTime.UtcNow.Date; // Get the current UTC date
+            DateTime startDate = endDate.AddYears(-1).AddDays(1); // Calculate the start date 1 year ago
+
+            List<double> revenueList = new List<double>();
+
+            for (int i = 0; i < 12; i++)
+            {
+                DateTime date = endDate.AddMonths(-i); // Calculate the date for each of the past 12 months
+                decimal revenue = _dbContext.Orders
+                    .Where(o => o.Status == "delivered" && o.UpdatedAt.Date >= startDate && o.UpdatedAt.Date <= endDate && o.UpdatedAt.Month == date.Month && o.UpdatedAt.Year == date.Year)
+                    .SelectMany(o => o.OrderItems)
+                    .Sum(oi => oi.Price * oi.Quantity); // Calculate the revenue for the month
+
+                revenueList.Insert(0, (double)revenue); // Insert the revenue at the beginning of the list
+            }
+
+            return revenueList;
+        }
     }
 }

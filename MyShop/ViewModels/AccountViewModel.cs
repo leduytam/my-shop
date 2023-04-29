@@ -21,7 +21,18 @@ namespace MyShop.ViewModels
         private bool _rememberMe;
         private AccountDAO _accountDao = new AccountDAO();
         private List<Account> _accounts;
+        private string _backGroundPath = "/images/general/account.jpg";
+        public string BackGroundPath
+        {
+            get { return _backGroundPath; }
+            set
+            {
 
+                _backGroundPath = value;
+                OnPropertyChanged(nameof(BackGroundPath));
+
+            }
+        }
         public string Username { get => _username; set { _username = value; OnPropertyChanged("Username"); } }
         public string Password { get => _password; set { _password = value; OnPropertyChanged("Password"); } }
         public bool RememberMe { get => _rememberMe; set { _rememberMe = value; OnPropertyChanged("RememberMe"); } }

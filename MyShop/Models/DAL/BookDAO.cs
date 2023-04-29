@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,7 +50,9 @@ namespace MyShop.Models.DAL
             var book = dbContext.Books.FirstOrDefault(b => b.Id == id);
             if (book != null)
             {
+
                 book.IsDeleted = true;
+                book.UpdatedAt = DateTime.UtcNow;
                 dbContext.SaveChanges();
             }
         }
@@ -79,6 +82,74 @@ namespace MyShop.Models.DAL
                                  .OrderBy(b => b.Quantity)
                                  .ToList();
         }
+        public List<(string Name, int Quantity)> GetTop5BooksInCurrentDay()
+        {
+            DateTime today = DateTime.UtcNow.Date;
+
+            var topBooks = dbContext.OrderItems
+                .Where(oi => oi.Order.Status == "delivered" && oi.Order.UpdatedAt.Date == today)
+                .GroupBy(oi => oi.Book)
+                .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
+                .OrderByDescending(b => b.Quantity)
+                .Take(5)
+                .ToList();
+
+            return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
+        }
+        public List<(string Name, int Quantity)> GetTop5BooksCurrentMonth()
+        {
+            var firstDayOfMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+            using (var db = new MyShopDbContext())
+            {
+                var topBooks = db.OrderItems
+                    .Where(oi => oi.Order.CreatedAt >= firstDayOfMonth && oi.Order.CreatedAt <= lastDayOfMonth)
+                    .GroupBy(oi => oi.Book)
+                    .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
+                    .OrderByDescending(b => b.Quantity)
+                    .Take(5)
+                    .ToList();
+
+                return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
+            }
+        }
+
+        public List<(string Name, int Quantity)> GetTop5BooksInCurrentYear()
+        {
+            DateTime now = DateTime.Now;
+            DateTime startOfYear = new DateTime(now.Year, 1, 1);
+            DateTime endOfYear = startOfYear.AddYears(1).AddDays(-1);
+
+            using (var db = new MyShopDbContext())
+            {
+                var topBooks = db.OrderItems
+                    .Where(oi => oi.Order.CreatedAt >= startOfYear && oi.Order.CreatedAt <= endOfYear)
+                    .GroupBy(oi => oi.Book)
+                    .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
+                    .OrderByDescending(b => b.Quantity)
+                    .Take(5)
+                    .ToList();
+
+                return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
+            }
+        }
+
+        public static List<(string BookName, int Quantity)> GetTop5BooksAllTime()
+        {
+            using (var db = new MyShopDbContext())
+            {
+                var topBooks = db.OrderItems
+                    .GroupBy(oi => oi.Book.Name)
+                    .Select(g => new { BookName = g.Key, Quantity = g.Sum(oi => oi.Quantity) })
+                    .OrderByDescending(x => x.Quantity)
+                    .Take(5)
+                    .ToList();
+
+                return topBooks.Select(x => (x.BookName, x.Quantity)).ToList();
+            }
+        }
+
         public void ImportBooksFromExcel(string filePath)
         {
             FileInfo fileInfo = new FileInfo(filePath);

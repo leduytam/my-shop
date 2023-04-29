@@ -5,6 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:ViewModels="clr-namespace:MyShop.ViewModels"
+      xmlns:converter="clr-namespace:MyShop.Ultils"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
       TextElement.FontWeight="Regular"
       TextElement.FontSize="13"
@@ -18,10 +20,13 @@
     <UserControl.DataContext>
         <ViewModels:ProductManagementViewModel/>
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <converter:RelativeToAbsolute x:Key="absoluteConverter"/>
+    </UserControl.Resources>
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="/images/general/backgroud.jpg"/>
+                <ImageBrush ImageSource="{Binding Path=BackGroundPath, Converter={StaticResource absoluteConverter}}"/>
             </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -98,6 +103,7 @@
                   materialDesign:RippleAssist.Feedback="#DD000000"
                   Content="Genre List"
                   IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                  Command="{Binding ShowListGenre}"
                   ToolTip="Resource name: MaterialDesignRaisedSecondaryButton" 
                   Background="#B9E9FC"/>
 
@@ -107,11 +113,21 @@
                   Content="Add new book"
                   IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                   ToolTip="Resource name: MaterialDesignRaisedSecondaryButton"
+                  Command="{Binding AddBook}"
                   Background="#B9E9FC"/>
-
 
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="2">
+                <Button
+                  Margin="0 0 0 0"
+                  materialDesign:RippleAssist.Feedback="#DD000000"
+                  Content="Refresh list"
+                  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                  ToolTip="Resource name: MaterialDesignRaisedSecondaryButton"
+                  Command="{Binding RefreshList}" 
+                  Background="#B9E9FC"/>
+                
+                <TextBlock Text="Danh sách sản phẩm" HorizontalAlignment="Center" FontSize="30" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
                 <StackPanel Margin="0, 20, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Command ="{Binding FirstPageCommand}" Width="100" Height="25" Content="First" Margin="5"
                         Background="#B9E9FC"></Button>
@@ -130,13 +146,18 @@
                         <VisualBrush Visual="{ Binding ElementName=BorderG1 }"/>
                     </Grid.OpacityMask>
                     <Border x:Name="BorderG1" CornerRadius="5" Background="#F6F1F1">
-                        <ListView ItemsSource="{Binding ListProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ListView Name="ListViewName" ItemsSource="{Binding ListProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="{Binding SelectedItem, ElementName=ListViewName}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn Header="Image" Width="Auto">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Image Source="{Binding Image}" Width="50" Height="50" />
+                                                <Image Source="{Binding Image, Converter={StaticResource absoluteConverter}}" Width="50" Height="50" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
@@ -149,6 +170,13 @@
                                     <GridViewColumn DisplayMemberBinding="{Binding OriginalPrice}" Header="OriginalPrice" Width="Auto" />
                                     <GridViewColumn DisplayMemberBinding="{Binding CreatedAt}" Header="Created At" Width="Auto" />
                                     <GridViewColumn DisplayMemberBinding="{Binding UpdatedAt}" Header="Updated At" Width="Auto" />
+                                    <GridViewColumn Header="Actions">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Button Content="Delete" Command="{Binding ElementName=ListViewName, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
                                 </GridView>
                             </ListView.View>
                         </ListView>

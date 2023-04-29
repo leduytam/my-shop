@@ -1,5 +1,4 @@
-﻿using MyShop.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,17 +10,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MyShop.Views.ContentView
+namespace MyShop.Views.ModalView
 {
     /// <summary>
-    /// Interaction logic for ProductManagementView.xaml
+    /// Interaction logic for ListGenreWindow.xaml
     /// </summary>
-    public partial class ProductManagementView : UserControl
+    public partial class ListGenreWindow : Window
     {
-        public ProductManagementView()
+        public ListGenreWindow()
         {
             InitializeComponent();
         }

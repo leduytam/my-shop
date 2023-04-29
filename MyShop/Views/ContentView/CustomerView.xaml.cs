@@ -1,5 +1,4 @@
-﻿using MyShop.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +16,11 @@ using System.Windows.Shapes;
 namespace MyShop.Views.ContentView
 {
     /// <summary>
-    /// Interaction logic for ProductManagementView.xaml
+    /// Interaction logic for CustomerView.xaml
     /// </summary>
-    public partial class ProductManagementView : UserControl
+    public partial class CustomerView : UserControl
     {
-        public ProductManagementView()
+        public CustomerView()
         {
             InitializeComponent();
         }

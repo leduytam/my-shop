@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using MyShop.Models;
 using MyShop.Models.DAL;
 using MyShop.Ultils;
+using MyShop.Views.ModalView;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,6 +14,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using static OfficeOpenXml.ExcelErrorValue;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MyShop.ViewModels
 {
@@ -29,7 +32,18 @@ namespace MyShop.ViewModels
         private string _genre = "";
         private decimal _curPrice = 0;
         private int _maximumPrice = 500000;
+        private string _backGroundPath = "/images/general/background.jpg";
+        public string BackGroundPath
+        {
+            get { return _backGroundPath; }
+            set
+            {
 
+                _backGroundPath = value;
+                OnPropertyChanged(nameof(BackGroundPath));
+
+            }
+        }
         public List<Book> books = new List<Book>();
         public List<Book> showBooks = new List<Book>();
         public List<Book> ListProduct { get => showBooks; set { showBooks = value; OnPropertyChanged("ListProduct"); } }
@@ -71,8 +85,19 @@ namespace MyShop.ViewModels
                 ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, value);
             }
         }
-
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get => _selectedIndex;
+            set
+            {
+                _selectedIndex = value;
+                OnPropertyChanged(nameof(SelectedIndex));
+            }
+        }
         public int PageItems { get => _curPage; set { _curPage = value; OnPropertyChanged("PageItems"); } }
+
+        public void UpdateBooks() { ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, _curPrice); }
 
         public ICommand FirstPageCommand { get; set; }
         public ICommand LastPageCommand { get; set; }
@@ -80,7 +105,11 @@ namespace MyShop.ViewModels
         public ICommand NextPageCommand { get; set; }
         public ICommand ImportGenreCommand { get; set; }
         public ICommand ImportBookCommand { get; set; }
-
+        public ICommand ShowListGenre { get; set; }
+        public ICommand SelectCommand { get; set; }
+        public ICommand DeleteCommand { get;set; }
+        public ICommand RefreshList { get; set; }
+        public ICommand AddBook { get; set; }
         public List<Book> FiltedBooks(string keyword, int currentPage, string genre, decimal maxPrice)
         {
             IEnumerable<Book> list;
@@ -91,7 +120,8 @@ namespace MyShop.ViewModels
                 listBooksGenre = _bookDao.GetBooksByGenre(genre);
                 list = listBooksGenre.Where(
                         item => item.Name.Contains(keyword))
-                    .Where(item => item.Price <= maxPrice);
+                    .Where(item => item.Price <= maxPrice)
+                    .Where(item => item.IsDeleted == false);
                 _totalPages = (list.Count() % _itemPerPage == 0 ? 0 : 1) + list.Count() / _itemPerPage;
                 list = list.Skip(currentPage * _itemPerPage).Take(_itemPerPage);
                 return list.ToList();
@@ -101,7 +131,8 @@ namespace MyShop.ViewModels
                 listBooksGenre = _bookDao.GetBooksByGenre(genre);
                 list = listBooksGenre.Where(
                         item => item.Name.Contains(keyword))
-                    .Where(item => item.Price <= maxPrice);
+                    .Where(item => item.Price <= maxPrice)
+                    .Where(item => item.IsDeleted == false);
                 int lastPage = (list.Count() % _itemPerPage == 0 ? 0 : 1) + list.Count() / _itemPerPage;
                 list = list.Skip((lastPage - 1) * _itemPerPage).Take(_itemPerPage);
                 _curPage = lastPage;
@@ -178,6 +209,38 @@ namespace MyShop.ViewModels
                     string filePath = openFileDialog.FileName;
                     _bookDao.ImportBooksFromExcel(filePath);
                 }
+            });
+            ShowListGenre = new RelayCommand<object>(p =>
+            {
+                ListGenreWindow listGenreWindow = new ListGenreWindow();
+                listGenreWindow.ShowDialog();
+            });
+            SelectCommand = new RelayCommand<Book>(book =>
+            {
+                if (book != null)
+                {
+                    BookInfoWindow bookInfoWindow = new BookInfoWindow(book);
+                    bookInfoWindow.ShowDialog();
+                }
+            });
+            DeleteCommand = new RelayCommand<Book>(book =>
+            {
+                books.RemoveAll(item => item.Id == book.Id);
+                _bookDao.DeleteBook(book.Id);
+                MessageBox.Show($"{book.Name} was deleted");
+                _curPage = 0;
+                ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, _curPrice);
+                PageItems = _curPage;
+            });
+            RefreshList = new RelayCommand<object>(p =>
+            {
+                ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, _curPrice);
+                MessageBox.Show("Data was refreshed");
+            });
+            AddBook = new RelayCommand<object>(p =>
+            {
+                BookInfoWindow bookInfoWindow = new BookInfoWindow();
+                bookInfoWindow.ShowDialog();
             });
         }
     }
