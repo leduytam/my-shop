@@ -25,5 +25,18 @@ namespace MyShop.Models.DAL
 
             return true;
         }
+        public (string Address, string Phone) GetRecipientDetails(string recipientName)
+        {
+
+            var account = dbContext.Accounts
+                .FirstOrDefault(a => a.FullName == recipientName);
+
+            if (account != null)
+            {
+                return (account.Address ?? "", account.Phone ?? "");
+            }
+
+            return ("", "");
+        }
     }
 }

@@ -55,10 +55,5 @@ namespace MyShop.Views.ModalView
             };
             ((BookInfoViewModel)DataContext).IsAdd = true;
         }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            
-        }
     }
 }

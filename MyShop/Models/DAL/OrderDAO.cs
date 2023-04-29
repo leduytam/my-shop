@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace MyShop.Models.DAL
 {
@@ -25,11 +26,15 @@ namespace MyShop.Models.DAL
 
         public void DeleteOrder(Guid orderId)
         {
-            var order = _dbContext.Orders.Find(orderId);
-            if (order != null)
+            using (var dbContext = new MyShopDbContext())
             {
-                _dbContext.Orders.Remove(order);
-                _dbContext.SaveChanges();
+                var order = dbContext.Orders.Include(o => o.OrderItems).FirstOrDefault(o => o.Id == orderId);
+                if (order != null)
+                {
+                    dbContext.OrderItems.RemoveRange(order.OrderItems);
+                    dbContext.Orders.Remove(order);
+                    dbContext.SaveChanges();
+                }
             }
         }
 
@@ -40,6 +45,13 @@ namespace MyShop.Models.DAL
                 .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Book)
                 .FirstOrDefault(o => o.Id == orderId);
+        }
+        public List<string> GetAllUsersName()
+        {
+            List<string> customerNames = _dbContext.Customers
+                .Select(c => c.IdNavigation.FullName)
+                .ToList();
+            return customerNames;
         }
 
         public List<Order> GetAllOrders()
@@ -135,6 +147,60 @@ namespace MyShop.Models.DAL
             }
 
             return revenueList;
+        }
+        public List<OrderItem> GetOrderItem(Guid orderId)
+        {
+            List<OrderItem> orderItems = _dbContext.OrderItems.Where(oi => oi.OrderId == orderId).ToList();
+
+            return orderItems;
+        }
+        public void DeleteOrderItem(Guid orderId, Guid bookId)
+        {
+            var db = new MyShopDbContext();
+            var orderItem = db.OrderItems.FirstOrDefault(oi => oi.OrderId == orderId && oi.BookId == bookId);
+            if (orderItem != null)
+            {
+                db.OrderItems.Remove(orderItem);
+                db.SaveChanges();
+            }
+        }
+        public void IncreaseOrderItemQuantity(Guid orderId, Guid bookId)
+        {
+            var db = new MyShopDbContext();
+            // Get the order item by order ID and book ID
+            var orderItem = db.OrderItems.FirstOrDefault(item => item.OrderId == orderId && item.BookId == bookId);
+
+            // If the order item exists, increase its quantity by 1
+            if (orderItem != null)
+            {
+                orderItem.Quantity++;
+                db.SaveChanges();
+            }
+        }
+        public void DecreaseOrderItemQuantity(Guid orderId, Guid bookId)
+        {
+            var db = new MyShopDbContext();
+            // Get the order item by order ID and book ID
+            var orderItem = db.OrderItems.FirstOrDefault(item => item.OrderId == orderId && item.BookId == bookId);
+
+            // If the order item exists, increase its quantity by 1
+            if (orderItem != null)
+            {
+                orderItem.Quantity--;
+                db.SaveChanges();
+            }
+        }
+        public decimal TotalPrice(Guid orderId)
+        {
+            using (var dbContext = new MyShopDbContext())
+            {
+                decimal totalPrice = dbContext.OrderItems
+                    .Where(oi => oi.OrderId == orderId)
+                    .Join(dbContext.Books, oi => oi.BookId, b => b.Id, (oi, b) => oi.Quantity * b.Price)
+                    .Sum();
+
+                return totalPrice;
+            }
         }
     }
 }
