@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,99 +13,136 @@ namespace MyShop.Models.DAL
 {
     class BookDAO
     {
-        private MyShopDbContext dbContext = new MyShopDbContext();
         public void AddBook(Book book)
         {
-            book.Id = Guid.NewGuid(); // Generate a new unique Id for the book
-            book.CreatedAt = DateTime.UtcNow; // Set the created date to current UTC time
-            book.UpdatedAt = DateTime.UtcNow; // Set the updated date to current UTC time
-            dbContext.Books.Add(book);
-            dbContext.SaveChanges();
+            using (var dbContext = new MyShopDbContext())
+            {
+                // Check if the book already exists in the database
+                var existingBook = dbContext.Books.FirstOrDefault(b => b.Id == book.Id);
+                if (existingBook != null)
+                {
+                    UpdateBook(book);
+
+                }
+                else
+                {
+                    book.CreatedAt = DateTime.UtcNow; // Set the created date to current UTC time
+                    book.UpdatedAt = DateTime.UtcNow; // Set the updated date to current UTC time
+                    dbContext.Books.Add(book);
+                    dbContext.SaveChanges();
+                }
+            }
         }
 
         // Update an existing book
         public void UpdateBook(Book book)
         {
-            var existingBook = dbContext.Books.FirstOrDefault(b => b.Id == book.Id);
-            if (existingBook != null)
+            using (var dbContext = new MyShopDbContext())
             {
-                existingBook.Name = book.Name;
-                existingBook.Description = book.Description;
-                existingBook.Image = book.Image;
-                existingBook.Isbn = book.Isbn;
-                existingBook.Price = book.Price;
-                existingBook.OriginalPrice = book.OriginalPrice;
-                existingBook.Discount = book.Discount;
-                existingBook.Quantity = book.Quantity;
-                existingBook.PublicationYear = book.PublicationYear;
-                existingBook.Author = book.Author;
-                existingBook.Publisher = book.Publisher;
-                existingBook.UpdatedAt = DateTime.UtcNow; // Update the updated date to current UTC time
-                dbContext.SaveChanges();
+                var existingBook = dbContext.Books.FirstOrDefault(b => b.Id == book.Id);
+                if (existingBook != null)
+                {
+                    existingBook.Name = book.Name;
+                    existingBook.Description = book.Description;
+                    existingBook.Image = book.Image;
+                    existingBook.Isbn = book.Isbn;
+                    existingBook.Price = book.Price;
+                    existingBook.OriginalPrice = book.OriginalPrice;
+                    existingBook.Discount = book.Discount;
+                    existingBook.Quantity = book.Quantity;
+                    existingBook.PublicationYear = book.PublicationYear;
+                    existingBook.Author = book.Author;
+                    existingBook.Publisher = book.Publisher;
+                    existingBook.UpdatedAt = DateTime.UtcNow; // Update the updated date to current UTC time
+                    dbContext.SaveChanges();
+                }
             }
         }
 
         // Delete a book
         public void DeleteBook(Guid id)
         {
-            var book = dbContext.Books.FirstOrDefault(b => b.Id == id);
-            if (book != null)
+            using (var dbContext = new MyShopDbContext())
             {
+                var book = dbContext.Books.FirstOrDefault(b => b.Id == id);
+                if (book != null)
+                {
 
-                book.IsDeleted = true;
-                book.UpdatedAt = DateTime.UtcNow;
-                dbContext.SaveChanges();
+                    book.IsDeleted = true;
+                    book.UpdatedAt = DateTime.UtcNow;
+                    dbContext.SaveChanges();
+                }
+            }
+        }
+        public void DeleteBookWithAssociate(Guid id)
+        {
+            using (var dbContext = new MyShopDbContext())
+            {
+                var book = dbContext.Books.Include(b => b.OrderItems).Include(b => b.Genres).FirstOrDefault(b => b.Id == id);
+                if (book != null)
+                {
+                    // Remove the book from any order items
+                    foreach (var orderItem in book.OrderItems.ToList())
+                    {
+                        dbContext.OrderItems.Remove(orderItem);
+                    }
+
+                    // Remove the book from any book genres
+                    foreach (var genre in book.Genres.ToList())
+                    {
+                        genre.Books.Remove(book);
+                    }
+
+                    dbContext.Books.Remove(book);
+                    dbContext.SaveChanges();
+                }
             }
         }
 
         // Get all books
         public List<Book> GetAllBooks()
         {
-            return dbContext.Books.Where(b => !b.IsDeleted).ToList();
+            using (var dbContext = new MyShopDbContext())
+            {
+                return dbContext.Books.Where(b => !b.IsDeleted).ToList();
+            }
         }
 
         // Get a book by Id
         public Book GetBookById(Guid id)
         {
-            return dbContext.Books.FirstOrDefault(b => b.Id == id && !b.IsDeleted);
+            using (var dbContext = new MyShopDbContext())
+            {
+                return dbContext.Books.FirstOrDefault(b => b.Id == id && !b.IsDeleted);
+            }
         }
 
         // Get books by genre
         public List<Book> GetBooksByGenre(string genre)
         {
-            if (genre == "" || genre == "All") return dbContext.Books.ToList();
-            else return dbContext.Books.Where(b => b.Genres.Any(g => g.Name == genre) && !b.IsDeleted).ToList();
-
+            using (var dbContext = new MyShopDbContext())
+            {
+                if (genre == "" || genre == "All") return dbContext.Books.ToList();
+                else return dbContext.Books.Where(b => b.Genres.Any(g => g.Name == genre) && !b.IsDeleted).ToList();
+            }
         }
         public List<Book> GetBooksWithQuantityLessThan5()
         {
-            return dbContext.Books.Where(b => b.Quantity < 5 && !b.IsDeleted)
+            using (var dbContext = new MyShopDbContext())
+            {
+                return dbContext.Books.Where(b => b.Quantity < 5 && !b.IsDeleted)
                                  .OrderBy(b => b.Quantity)
                                  .ToList();
+            }
         }
         public List<(string Name, int Quantity)> GetTop5BooksInCurrentDay()
         {
-            DateTime today = DateTime.UtcNow.Date;
-
-            var topBooks = dbContext.OrderItems
-                .Where(oi => oi.Order.Status == "delivered" && oi.Order.UpdatedAt.Date == today)
-                .GroupBy(oi => oi.Book)
-                .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
-                .OrderByDescending(b => b.Quantity)
-                .Take(5)
-                .ToList();
-
-            return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
-        }
-        public List<(string Name, int Quantity)> GetTop5BooksCurrentMonth()
-        {
-            var firstDayOfMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
-            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-
-            using (var db = new MyShopDbContext())
+            using (var dbContext = new MyShopDbContext())
             {
-                var topBooks = db.OrderItems
-                    .Where(oi => oi.Order.CreatedAt >= firstDayOfMonth && oi.Order.CreatedAt <= lastDayOfMonth)
+                DateTime today = DateTime.UtcNow.Date;
+
+                var topBooks = dbContext.OrderItems
+                    .Where(oi => oi.Order.Status == "delivered" && oi.Order.UpdatedAt.Date == today)
                     .GroupBy(oi => oi.Book)
                     .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
                     .OrderByDescending(b => b.Quantity)
@@ -114,24 +152,48 @@ namespace MyShop.Models.DAL
                 return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
             }
         }
+        public List<(string Name, int Quantity)> GetTop5BooksCurrentMonth()
+        {
+            using (var dbContext = new MyShopDbContext())
+            {
+                var firstDayOfMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
+                var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+                using (var db = new MyShopDbContext())
+                {
+                    var topBooks = db.OrderItems
+                        .Where(oi => oi.Order.CreatedAt >= firstDayOfMonth && oi.Order.CreatedAt <= lastDayOfMonth)
+                        .GroupBy(oi => oi.Book)
+                        .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
+                        .OrderByDescending(b => b.Quantity)
+                        .Take(5)
+                        .ToList();
+
+                    return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
+                }
+            }
+        }
 
         public List<(string Name, int Quantity)> GetTop5BooksInCurrentYear()
         {
-            DateTime now = DateTime.Now;
-            DateTime startOfYear = new DateTime(now.Year, 1, 1);
-            DateTime endOfYear = startOfYear.AddYears(1).AddDays(-1);
-
-            using (var db = new MyShopDbContext())
+            using (var dbContext = new MyShopDbContext())
             {
-                var topBooks = db.OrderItems
-                    .Where(oi => oi.Order.CreatedAt >= startOfYear && oi.Order.CreatedAt <= endOfYear)
-                    .GroupBy(oi => oi.Book)
-                    .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
-                    .OrderByDescending(b => b.Quantity)
-                    .Take(5)
-                    .ToList();
+                DateTime now = DateTime.Now;
+                DateTime startOfYear = new DateTime(now.Year, 1, 1);
+                DateTime endOfYear = startOfYear.AddYears(1).AddDays(-1);
 
-                return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
+                using (var db = new MyShopDbContext())
+                {
+                    var topBooks = db.OrderItems
+                        .Where(oi => oi.Order.CreatedAt >= startOfYear && oi.Order.CreatedAt <= endOfYear)
+                        .GroupBy(oi => oi.Book)
+                        .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
+                        .OrderByDescending(b => b.Quantity)
+                        .Take(5)
+                        .ToList();
+
+                    return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
+                }
             }
         }
 

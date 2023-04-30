@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyShop.Views.ModalView"
         mc:Ignorable="d"
+        Name="Window"
         xmlns:ViewModels="clr-namespace:MyShop.ViewModels"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -13,8 +14,9 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="OrderInfoWindow" d:Height="650" Width="800"
-        WindowStartupLocation ="CenterScreen">
+        Title="OrderInfoWindow" d:Height="650" Width="900"
+        WindowStartupLocation ="CenterScreen"
+        WindowStyle="None">
     <Window.DataContext>
         <ViewModels:OrderInfoViewModel/>
     </Window.DataContext>
@@ -93,9 +95,23 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="2">
+                <ListView Margin ="10" Grid.Row="8" Grid.ColumnSpan="2" Name="ListViewName1" ItemsSource="{Binding ListAddableProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding BookName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Book Name" Width="Auto" />
+                            <GridViewColumn Header="Actions">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Add" Command="{Binding ElementName=ListViewName1, Path=DataContext.AddCommand}" CommandParameter="{Binding}" Click="Button_Click"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="2">
                     <Button Content="Save" Margin="5" Command="{Binding SaveCommand}"/>
-                    <Button Content="Close" Margin="5"/>
+                    <Button Content="Close" Margin="5" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=Window}"/>
                 </StackPanel>
             </Grid>
         </ScrollViewer>

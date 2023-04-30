@@ -12,45 +12,62 @@ namespace MyShop.Models.DAL
 {
     public class GenreDAO
     {
-        private MyShopDbContext _dbContext = new MyShopDbContext();
 
         public IEnumerable<Genre> GetAllGenres()
         {
-            return _dbContext.Genres.ToList();
+            using (var _dbContext = new MyShopDbContext())
+            {
+                return _dbContext.Genres.ToList();
+            }
         }
 
         public Genre GetGenreById(Guid id)
         {
-            return _dbContext.Genres.FirstOrDefault(g => g.Id == id);
+            using (var _dbContext = new MyShopDbContext())
+            {
+                return _dbContext.Genres.FirstOrDefault(g => g.Id == id);
+            }
         }
 
         public void AddGenre(Genre genre)
         {
-            _dbContext.Genres.Add(genre);
-            _dbContext.SaveChanges();
+            using (var _dbContext = new MyShopDbContext())
+            {
+                _dbContext.Genres.Add(genre);
+                _dbContext.SaveChanges();
+            }
         }
 
         public void UpdateGenre(Genre genre)
         {
-            _dbContext.Entry(genre).State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            using (var _dbContext = new MyShopDbContext())
+            {
+                _dbContext.Entry(genre).State = EntityState.Modified;
+                _dbContext.SaveChanges();
+            }
         }
 
         public void DeleteGenre(Guid id)
         {
-            var genre = _dbContext.Genres.FirstOrDefault(g => g.Id == id);
-            if (genre != null)
+            using (var _dbContext = new MyShopDbContext())
             {
-                genre.IsDeleted = true;
-                genre.UpdatedAt = DateTime.Now;
-                _dbContext.SaveChanges();
+                var genre = _dbContext.Genres.FirstOrDefault(g => g.Id == id);
+                if (genre != null)
+                {
+                    genre.IsDeleted = true;
+                    genre.UpdatedAt = DateTime.Now;
+                    _dbContext.SaveChanges();
+                }
             }
         }
         public List<string> GetGenreNames()
         {
-            return _dbContext.Genres
+            using (var _dbContext = new MyShopDbContext())
+            {
+                return _dbContext.Genres
                 .Select(g => g.Name)
                 .ToList();
+            }
         }
         public void ImportGenresFromExcel(string filePath)
         {

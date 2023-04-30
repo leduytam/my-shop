@@ -19,6 +19,7 @@
             <TextBlock Text="To Date: " VerticalAlignment="Center"></TextBlock>
             <DatePicker Width="200" Margin="10" SelectedDate="{Binding ToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
         </StackPanel>
+        <Button DockPanel.Dock="Top" Content="Add new Order" Margin="300 0 300 0" Command="{Binding AddOrderCommand}"></Button>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Content="Previous" Width="100" Margin="10" Command="{Binding PreviousPageCommand}"></Button>

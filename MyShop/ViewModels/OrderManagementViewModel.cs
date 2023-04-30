@@ -24,24 +24,38 @@ namespace MyShop.ViewModels
         private DateTime _fromDate = DateTime.Now.AddYears(-1);
         private DateTime _toDate = DateTime.Now;
         public List<Order> ListOrder { get => _showOrder; set { _showOrder = value; OnPropertyChanged("ListOrder"); } }
-        public int CurrentPage { get => _curPage; set { 
-                _curPage = value; 
-                OnPropertyChanged("CurrentPage"); } }
-        public DateTime FromDate { get => _fromDate; set { 
-                _fromDate = value; 
+        public int CurrentPage
+        {
+            get => _curPage; set
+            {
+                _curPage = value;
+                OnPropertyChanged("CurrentPage");
+            }
+        }
+        public DateTime FromDate
+        {
+            get => _fromDate; set
+            {
+                _fromDate = value;
                 OnPropertyChanged("FromDate");
                 ListOrder = FilterOrder(_curPage, FromDate, ToDate);
-            } }
-        public DateTime ToDate { get => _toDate; set { 
-                _toDate = value; 
+            }
+        }
+        public DateTime ToDate
+        {
+            get => _toDate; set
+            {
+                _toDate = value;
                 OnPropertyChanged("ToDate");
                 ListOrder = FilterOrder(_curPage, FromDate, ToDate);
-            } }
+            }
+        }
         public ICommand SelectCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand CreateNewOrder { get; set; }
         public ICommand PreviousPageCommand { get; set; }
         public ICommand NextPageCommand { get; set; }
+        public ICommand AddOrderCommand { get; set; }
         public List<Order> FilterOrder(int curPage, DateTime fromDate, DateTime toDate)
         {
             int perPage = _itemPerPage;
@@ -61,13 +75,15 @@ namespace MyShop.ViewModels
             _totalItems = _orderDAO.GetAllOrders().Count;
             _totalPages = (_totalItems % _itemPerPage == 0 ? 0 : 1) + _totalItems / _itemPerPage;
             _showOrder = FilterOrder(_curPage, FromDate, ToDate);
-            NextPageCommand = new RelayCommand<object>(p =>{
+            NextPageCommand = new RelayCommand<object>(p =>
+            {
                 _curPage++;
                 if (_curPage > _totalPages - 1) { --_curPage; return; }
                 ListOrder = FilterOrder(_curPage, FromDate, ToDate);
                 CurrentPage = _curPage;
             });
-            PreviousPageCommand = new RelayCommand<object>(p =>{
+            PreviousPageCommand = new RelayCommand<object>(p =>
+            {
                 _curPage--;
                 if (CurrentPage >= 0)
                 {
@@ -87,7 +103,15 @@ namespace MyShop.ViewModels
                     orderInfoWindow.ShowDialog();
                 }
             });
-            DeleteCommand = new RelayCommand<Order>(p => {
+            AddOrderCommand = new RelayCommand<object>(p =>
+            {
+
+                OrderInfoWindow orderInfoWindow = new OrderInfoWindow();
+                orderInfoWindow.ShowDialog();
+
+            });
+            DeleteCommand = new RelayCommand<Order>(p =>
+            {
 
                 _orderDAO.DeleteOrder(p.Id);
                 _curPage = 0;

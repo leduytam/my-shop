@@ -8,35 +8,42 @@ namespace MyShop.Models.DAL
 {
     internal class AccountDAO
     {
-        private MyShopDbContext dbContext = new MyShopDbContext();
         public List<Account> GetAllAccounts()
         {
-            return dbContext.Accounts.ToList();
+            using (var dbContext = new MyShopDbContext())
+            {
+                return dbContext.Accounts.ToList();
+            }
         }
         public bool AddAccount(Account account)
         {
-            if (dbContext.Accounts.Any(a => a.Username == account.Username))
+            using (var dbContext = new MyShopDbContext())
             {
-                return false;
-            }
-            // Add the account to the database
-            dbContext.Accounts.Add(account);
-            dbContext.SaveChanges();
+                if (dbContext.Accounts.Any(a => a.Username == account.Username))
+                {
+                    return false;
+                }
+                // Add the account to the database
+                dbContext.Accounts.Add(account);
+                dbContext.SaveChanges();
 
-            return true;
+                return true;
+            }
         }
         public (string Address, string Phone) GetRecipientDetails(string recipientName)
         {
-
-            var account = dbContext.Accounts
+            using (var dbContext = new MyShopDbContext())
+            {
+                var account = dbContext.Accounts
                 .FirstOrDefault(a => a.FullName == recipientName);
 
-            if (account != null)
-            {
-                return (account.Address ?? "", account.Phone ?? "");
-            }
+                if (account != null)
+                {
+                    return (account.Address ?? "", account.Phone ?? "");
+                }
 
-            return ("", "");
+                return ("", "");
+            }
         }
     }
 }

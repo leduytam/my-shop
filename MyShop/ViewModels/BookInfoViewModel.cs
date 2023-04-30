@@ -19,10 +19,12 @@ namespace MyShop.ViewModels
     {
         private Book _book;
         private BookDAO _bookDAO = new BookDAO();
+        private bool isSave = true;
         public Book Book { get => _book; set { 
                 _book = value; 
                 GetListBookGenre(); 
                 GetListAddedBookGenre();
+                _bookDAO.AddBook(Book);
                 OnPropertyChanged("Book"); } }
         public bool IsAdd { get; set; }
         public FileInfo _selectedImage = null;
@@ -72,6 +74,7 @@ namespace MyShop.ViewModels
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteGenreCommand { get; set; }
         public ICommand AddGenreCommand { get; set; }
+        public ICommand CloseCommand { get; set; }
 
         private ObservableCollection<BookGenre> _listGenre = new ObservableCollection<BookGenre>();
         public ObservableCollection<BookGenre> ListGenre
@@ -227,7 +230,8 @@ namespace MyShop.ViewModels
                                     File.Copy(_selectedImage.FullName, newName);
                                     Book.Image = "/images/books/" + newImageName;
                                 }
-                                _bookDAO.AddBook(Book);
+                                _bookDAO.UpdateBook(Book);
+                                isSave = true;
                                 MessageBox.Show("Added successfully");
                             }
                             else
@@ -311,6 +315,21 @@ namespace MyShop.ViewModels
                     {
                         MessageBox.Show("Something wrong");
                     }
+                }
+            });
+            CloseCommand = new RelayCommand<Window>(p =>
+            {
+                if (isSave == true)
+                {
+                    p.Close();
+                }
+                else
+                {
+                    if (IsAdd == true && isSave == false)
+                    {
+                        _bookDAO.DeleteBookWithAssociate(Book.Id);
+                    }
+                    p.Close();
                 }
             });
         }

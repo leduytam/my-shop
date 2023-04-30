@@ -14,7 +14,9 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         xmlns:converter="clr-namespace:MyShop.Ultils"
-        Title="BookInfoWindow" d:Height="750" Width="800">
+        Title="BookInfoWindow" d:Height="650" Width="900"
+        Name="Window"
+        WindowStyle="None">
     <Window.Resources>
         <converter:RelativeToAbsolute x:Key="absoluteConverter"/>
     </Window.Resources>
@@ -82,7 +84,7 @@
             <TextBlock Margin ="10" Grid.Row="11" Grid.Column="0" Text="Updated At: "/>
             <TextBlock Margin ="10" Grid.Row="11" Grid.Column="1" Text="{Binding Book.UpdatedAt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <TextBlock Margin ="10" Grid.Row="12" Grid.Column="0" Text="Genres: "/>
+            <TextBlock Name="Genre" Margin ="10" Grid.Row="12" Grid.Column="0" Text="Genres: "/>
             <StackPanel Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <ListView Margin ="10" Name="ListViewName" ItemsSource="{Binding ListGenre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ListView.View>
@@ -117,7 +119,7 @@
 
             <StackPanel Orientation="Horizontal" Grid.Row="13" Grid.Column="2">
                 <Button Content="Save" Margin="5" Command="{Binding SaveCommand}"/>
-                <Button Content="Close" Margin="5"/>
+                <Button Content="Close" Margin="5" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=Window}"/>
             </StackPanel>
 
             <StackPanel Orientation="Vertical" Grid.Row="0" Grid.Column="2" Grid.RowSpan="11">

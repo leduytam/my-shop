@@ -22,17 +22,34 @@ namespace MyShop.Views.ModalView
     /// </summary>
     public partial class OrderInfoWindow : Window
     {
-        private Order order;
         public OrderInfoWindow()
         {
             InitializeComponent();
+            DataContext = new OrderInfoViewModel();
+            using (var db = new MyShopDbContext())
+            {
+                ((OrderInfoViewModel)DataContext).Order = new Order
+                {
+                    Id = Guid.NewGuid(),
+                    Status = "pending",
+                    CustomerId = db.Customers.Select(c => c.Id).FirstOrDefault(),
+                    RecipientName = string.Empty,
+                    RecipientAddress = string.Empty,
+                    RecipientPhone = string.Empty,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    Customer = null,
+                    OrderItems = new List<OrderItem>()
+                };
+                ((OrderInfoViewModel)DataContext).isAdd = true;
+            }
         }
         public OrderInfoWindow(Order o)
         {
             InitializeComponent();
-            this.order = o;
             DataContext = new OrderInfoViewModel();
             ((OrderInfoViewModel)DataContext).Order = o;
+            ((OrderInfoViewModel)DataContext).isAdd = false;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
