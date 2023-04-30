@@ -107,7 +107,7 @@ namespace MyShop.ViewModels
         public ICommand ImportBookCommand { get; set; }
         public ICommand ShowListGenre { get; set; }
         public ICommand SelectCommand { get; set; }
-        public ICommand DeleteCommand { get;set; }
+        public ICommand DeleteCommand { get; set; }
         public ICommand RefreshList { get; set; }
         public ICommand AddBook { get; set; }
         public List<Book> FiltedBooks(string keyword, int currentPage, string genre, decimal maxPrice)
@@ -135,8 +135,8 @@ namespace MyShop.ViewModels
                     .Where(item => item.IsDeleted == false);
                 int lastPage = (list.Count() % _itemPerPage == 0 ? 0 : 1) + list.Count() / _itemPerPage;
                 list = list.Skip((lastPage - 1) * _itemPerPage).Take(_itemPerPage);
-                _curPage = lastPage;
-                _totalPages = lastPage;
+                _curPage = lastPage - 1;
+                _totalPages = lastPage - 1;
                 return list.ToList();
             }
         }
@@ -169,8 +169,7 @@ namespace MyShop.ViewModels
             PreviousPageCommand = new RelayCommand<Button>(p =>
             {
                 --_curPage;
-                if (_curPage < 0) { ++_curPage;  return; }
-
+                if (_curPage < 0) { ++_curPage; return; }
                 ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, _curPrice);
                 PageItems = _curPage;
             });

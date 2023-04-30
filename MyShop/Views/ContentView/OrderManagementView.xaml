@@ -4,9 +4,53 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MyShop.Views.ContentView"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+      xmlns:ViewModels="clr-namespace:MyShop.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        
-    </Grid>
+    <UserControl.DataContext>
+        <ViewModels:OrderManagementViewModel/>
+    </UserControl.DataContext>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBlock Text="From Date: " VerticalAlignment="Center"></TextBlock>
+            <DatePicker Width="200" Margin="10" SelectedDate="{Binding FromDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+            <TextBlock Text="To Date: " VerticalAlignment="Center"></TextBlock>
+            <DatePicker Width="200" Margin="10" SelectedDate="{Binding ToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
+        </StackPanel>
+        <Button DockPanel.Dock="Top" Content="Add new Order" Margin="300 0 300 0" Command="{Binding AddOrderCommand}"></Button>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Previous" Width="100" Margin="10" Command="{Binding PreviousPageCommand}"></Button>
+                <Button Content="{Binding CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="50" Margin="10"></Button>
+                <Button Content="Next" Width="100" Margin="10" Command="{Binding NextPageCommand}"></Button>
+            </StackPanel>
+            <ListView Name="ListViewName" ItemsSource="{Binding ListOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="{Binding SelectedItem, ElementName=ListViewName}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding RecipientName}" Header="Recipent Name" Width="Auto" />
+                        <GridViewColumn DisplayMemberBinding="{Binding RecipientAddress}" Header="Recipent Address" Width="Auto" />
+                        <GridViewColumn DisplayMemberBinding="{Binding RecipientPhone}" Header="Recipent Phone" Width="Auto" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status" Width="Auto" />
+                        <GridViewColumn Header="Actions">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Delete" Command="{Binding ElementName=ListViewName, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Right">
+            <Button Margin="10" Content="Create new order" Command="{Binding CreateNewOrder}"></Button>
+        </StackPanel>
+    </DockPanel>
 </UserControl>
