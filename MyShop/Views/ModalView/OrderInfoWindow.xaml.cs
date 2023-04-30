@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,12 +45,15 @@ namespace MyShop.Views.ModalView
         }
         private void Button_Click1(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //this.Close();
+            //Thread.Sleep(500);
+            //// Open a new window
+            //OrderInfoWindow newWindow = new OrderInfoWindow(order);
+            //newWindow.Show();
+            double currentWidth = Width;
 
-            // Open a new window
-            OrderInfoWindow newWindow = new OrderInfoWindow(order);
-            newWindow.Show();
-
+            Width = currentWidth + 1;
+            Width = currentWidth;
         }
     }
 }

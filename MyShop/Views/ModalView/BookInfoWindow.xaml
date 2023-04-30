@@ -14,7 +14,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         xmlns:converter="clr-namespace:MyShop.Ultils"
-        Title="BookInfoWindow" Height="450" Width="800">
+        Title="BookInfoWindow" d:Height="750" Width="800">
     <Window.Resources>
         <converter:RelativeToAbsolute x:Key="absoluteConverter"/>
     </Window.Resources>
@@ -24,6 +24,9 @@
     <ScrollViewer>
         <Grid>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -79,7 +82,40 @@
             <TextBlock Margin ="10" Grid.Row="11" Grid.Column="0" Text="Updated At: "/>
             <TextBlock Margin ="10" Grid.Row="11" Grid.Column="1" Text="{Binding Book.UpdatedAt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-            <StackPanel Orientation="Horizontal" Grid.Row="12" Grid.Column="2">
+            <TextBlock Margin ="10" Grid.Row="12" Grid.Column="0" Text="Genres: "/>
+            <StackPanel Grid.Row="12" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+                <ListView Margin ="10" Name="ListViewName" ItemsSource="{Binding ListGenre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding GenreName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Genre Name" Width="Auto" />
+                            <GridViewColumn Header="Actions">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Delete" Command="{Binding ElementName=ListViewName, Path=DataContext.DeleteGenreCommand}" CommandParameter="{Binding}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <ListView Margin ="10" Name="ListViewName1" ItemsSource="{Binding ListAddableGenre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding GenreName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Genre Name" Width="Auto" />
+                            <GridViewColumn Header="Actions">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Add" Command="{Binding ElementName=ListViewName1, Path=DataContext.AddGenreCommand}" CommandParameter="{Binding}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Row="13" Grid.Column="2">
                 <Button Content="Save" Margin="5" Command="{Binding SaveCommand}"/>
                 <Button Content="Close" Margin="5"/>
             </StackPanel>

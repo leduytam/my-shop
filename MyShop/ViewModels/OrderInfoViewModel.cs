@@ -116,8 +116,8 @@ namespace MyShop.ViewModels
                     _orderDAO.UpdateOrder(Order);
                     TotalPrice = _orderDAO.TotalPrice(Order.Id);
                     item.Quantity--;
-                    OnPropertyChanged("ListProduct");
                     MessageBox.Show("Decrease successful");
+                    OnPropertyChanged("ListProduct");
                 }
                 else
                 {
@@ -145,17 +145,33 @@ namespace MyShop.ViewModels
         public ICommand DeleteCommand { get; set; }
         public ICommand IncreaseCommand { get; set; }
         public ICommand DecreaseCommand { get; set; }
-        public class BookNameQuantity
+        public class BookNameQuantity: INotifyPropertyChanged
         {
             public Guid BookId { get; set; }
-            public string BookName { get; set;}
-            public int Quantity { get; set;}
+            private string _bookName;
+            public string BookName
+            {
+                get { return _bookName; }
+                set { _bookName = value; OnPropertyChanged(nameof(BookName)); }
+            }
+            private int _quantity;
+            public int Quantity
+            {
+                get { return _quantity; }
+                set { _quantity = value; OnPropertyChanged(nameof(Quantity)); }
+            }
 
             public BookNameQuantity(Guid bookId, string bookName, int quantity)
             {
                 this.BookId = bookId;
                 BookName = bookName;
                 Quantity = quantity;
+            }
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            protected void OnPropertyChanged(string propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
