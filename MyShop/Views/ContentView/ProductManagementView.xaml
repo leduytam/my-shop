@@ -66,8 +66,6 @@
                           Mode="TwoWay"
                           Path="SelectedValueOne"
                           UpdateSourceTrigger="PropertyChanged">
-                            <Binding.ValidationRules>
-                            </Binding.ValidationRules>
                         </Binding>
                     </ComboBox.SelectedItem>
                 </ComboBox>
@@ -141,6 +139,13 @@
                         Background="#B9E9FC"></Button>
 
                 </StackPanel>
+                <ComboBox ItemsSource="{Binding PageSizes}" SelectedValue="{Binding ItemPerPage, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <Grid Background="White" Margin="5">
                     <Grid.OpacityMask>
                         <VisualBrush Visual="{ Binding ElementName=BorderG1 }"/>

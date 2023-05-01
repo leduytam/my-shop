@@ -6,6 +6,7 @@ using MyShop.Ultils;
 using MyShop.Views.ModalView;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -27,7 +28,6 @@ namespace MyShop.ViewModels
         private int _curPage = 0;
         private int _totalItems = 0;
         private int _totalPages = 0;
-        private int _itemPerPage = 6;
         private string _curKeyword = "";
         private string _genre = "";
         private decimal _curPrice = 0;
@@ -44,9 +44,23 @@ namespace MyShop.ViewModels
 
             }
         }
-        public List<Book> books = new List<Book>();
-        public List<Book> showBooks = new List<Book>();
-        public List<Book> ListProduct { get => showBooks; set { showBooks = value; OnPropertyChanged("ListProduct"); } }
+        private int _itemPerPage = 5;
+
+        public int ItemPerPage
+        {
+            get { return _itemPerPage; }
+            set
+            {
+                _itemPerPage = value;
+                OnPropertyChanged(nameof(ItemPerPage));
+                ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, _curPrice);
+            }
+        }
+
+        public List<int> PageSizes { get; } = new List<int> { 5, 10, 15, 20 };
+        public ObservableCollection<Book> books = new ObservableCollection<Book>();
+        public ObservableCollection<Book> showBooks = new ObservableCollection<Book>();
+        public ObservableCollection<Book> ListProduct { get => showBooks; set { showBooks = value; OnPropertyChanged("ListProduct"); } }
         public List<string> GenreList { get => _gerneList; set { _gerneList = value; OnPropertyChanged("GenreList"); } }
         public int MaximumPrice { get => _maximumPrice; set { _maximumPrice = value; OnPropertyChanged("MaximumPrice"); } }
         public string SelectedGenre
@@ -110,7 +124,7 @@ namespace MyShop.ViewModels
         public ICommand DeleteCommand { get; set; }
         public ICommand RefreshList { get; set; }
         public ICommand AddBook { get; set; }
-        public List<Book> FiltedBooks(string keyword, int currentPage, string genre, decimal maxPrice)
+        public ObservableCollection<Book> FiltedBooks(string keyword, int currentPage, string genre, decimal maxPrice)
         {
             IEnumerable<Book> list;
             List<Book> listBooksGenre = new List<Book>();
@@ -124,7 +138,7 @@ namespace MyShop.ViewModels
                     .Where(item => item.IsDeleted == false);
                 _totalPages = (list.Count() % _itemPerPage == 0 ? 0 : 1) + list.Count() / _itemPerPage;
                 list = list.Skip(currentPage * _itemPerPage).Take(_itemPerPage);
-                return list.ToList();
+                return new ObservableCollection<Book>(list.ToList());
             }
             else
             {
@@ -137,16 +151,17 @@ namespace MyShop.ViewModels
                 list = list.Skip((lastPage - 1) * _itemPerPage).Take(_itemPerPage);
                 _curPage = lastPage - 1;
                 _totalPages = lastPage - 1;
-                return list.ToList();
+                return new ObservableCollection<Book>(list.ToList());
             }
         }
+
         public ProductManagementViewModel()
         {
             _curPrice = MaximumPrice;
             _gerneList = _genreDao.GetGenreNames();
             GenreList.Insert(0, "All");
-            books = _bookDao.GetAllBooks();
-            showBooks = books.Take(_itemPerPage).ToList();
+            books = new ObservableCollection<Book>(_bookDao.GetAllBooks().ToList());
+            showBooks = new ObservableCollection<Book>(books.Take(_itemPerPage).ToList());
             _totalItems = books.Count;
             _totalPages = (_totalItems % _itemPerPage == 0 ? 0 : 1) + _totalItems / _itemPerPage;
             FirstPageCommand = new RelayCommand<object>(p =>
@@ -224,7 +239,13 @@ namespace MyShop.ViewModels
             });
             DeleteCommand = new RelayCommand<Book>(book =>
             {
-                books.RemoveAll(item => item.Id == book.Id);
+                for (int i = books.Count - 1; i >= 0; i--)
+                {
+                    if (books[i].Id == book.Id)
+                    {
+                        books.RemoveAt(i);
+                    }
+                }
                 _bookDao.DeleteBook(book.Id);
                 MessageBox.Show($"{book.Name} was deleted");
                 _curPage = 0;

@@ -3,6 +3,7 @@ using MyShop.Models.DAL;
 using MyShop.Views.ModalView;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,13 +18,25 @@ namespace MyShop.ViewModels
     {
         private OrderDAO _orderDAO = new OrderDAO();
         private int _curPage = 0;
-        private List<Order> _showOrder = new List<Order>();
-        private int _itemPerPage = 6;
+        private ObservableCollection<Order> _showOrder = new ObservableCollection<Order>();
         private int _totalPages = 0;
         private int _totalItems = 0;
         private DateTime _fromDate = DateTime.Now.AddYears(-1);
         private DateTime _toDate = DateTime.Now;
-        public List<Order> ListOrder { get => _showOrder; set { _showOrder = value; OnPropertyChanged("ListOrder"); } }
+        private int _itemPerPage = 5;
+
+        public int ItemPerPage
+        {
+            get { return _itemPerPage; }
+            set
+            {
+                _itemPerPage = value;
+                OnPropertyChanged(nameof(ItemPerPage));
+                ListOrder = FilterOrder(_curPage, FromDate, ToDate);
+            }
+        }
+        public List<int> PageSizes { get; } = new List<int> { 5, 10, 15, 20 };
+        public ObservableCollection<Order> ListOrder { get => _showOrder; set { _showOrder = value; OnPropertyChanged("ListOrder"); } }
         public int CurrentPage
         {
             get => _curPage; set
@@ -56,7 +69,7 @@ namespace MyShop.ViewModels
         public ICommand PreviousPageCommand { get; set; }
         public ICommand NextPageCommand { get; set; }
         public ICommand AddOrderCommand { get; set; }
-        public List<Order> FilterOrder(int curPage, DateTime fromDate, DateTime toDate)
+        public ObservableCollection<Order> FilterOrder(int curPage, DateTime fromDate, DateTime toDate)
         {
             int perPage = _itemPerPage;
             int startIndex = curPage * perPage;
@@ -67,7 +80,7 @@ namespace MyShop.ViewModels
                     .OrderByDescending(o => o.CreatedAt);
                 _totalPages = (orders.Count() % _itemPerPage == 0 ? 0 : 1) + orders.Count() / _itemPerPage;
                 orders = orders.Skip(startIndex).Take(perPage);
-                return orders.ToList();
+                return new ObservableCollection<Order>(orders);
             }
         }
         public OrderManagementViewModel()
