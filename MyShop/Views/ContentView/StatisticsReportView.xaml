@@ -83,7 +83,7 @@
                         <lvc:Axis Title="Month-Day" Labels="{Binding DatesFromTo}" MaxWidth="120"></lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Revenue" Labels="From to"></lvc:Axis>
+                        <lvc:Axis Title="Number of books" Labels="From to"></lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
 
@@ -92,7 +92,7 @@
                         <lvc:Axis Title="Month-Day" Labels="{Binding DatesWeek}" MaxWidth="120"></lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Revenue" Labels="Week"></lvc:Axis>
+                        <lvc:Axis Title="Number of books" Labels="Week"></lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
                 <lvc:CartesianChart Series="{Binding CollectionMonth}" LegendLocation="Bottom" Grid.Row="2" Grid.ColumnSpan="3" Height="200">
@@ -100,7 +100,7 @@
                         <lvc:Axis Title="Month-Year" Labels="{Binding DatesMonth}" MaxWidth="120"></lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Revenue" Labels="Month 4"></lvc:Axis>
+                        <lvc:Axis Title="Number of books" Labels="Month 4"></lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
                 <lvc:CartesianChart Series="{Binding CollectionYear}" LegendLocation="Bottom" Grid.Row="3" Grid.ColumnSpan="3" Height="200">
@@ -108,7 +108,7 @@
                         <lvc:Axis Title="Month-Year" Labels="{Binding DatesYear}" MaxWidth="120"></lvc:Axis>
                     </lvc:CartesianChart.AxisX>
                     <lvc:CartesianChart.AxisY>
-                        <lvc:Axis Title="Revenue" Labels="Last year"></lvc:Axis>
+                        <lvc:Axis Title="Number of books" Labels="Last year"></lvc:Axis>
                     </lvc:CartesianChart.AxisY>
                 </lvc:CartesianChart>
             </Grid>
