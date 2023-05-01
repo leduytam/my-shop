@@ -1,6 +1,7 @@
 ﻿using MyShop.Views.ContentView;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,8 +25,35 @@ namespace MyShop.Views
         public DashboardWindow()
         {
             InitializeComponent();
-            HomeView homeView = new HomeView();
-            this.CurView.Content = homeView;
+            string userControl = ConfigurationManager.AppSettings["CurrentUserControl"]!;
+            if (userControl.Length != 0 )
+            {
+                if (userControl == "Home")
+                {
+                    this.CurView.Content = new HomeView();
+                }
+                else if (userControl == "Order")
+                {
+                    this.CurView.Content = new OrderManagementView();
+                }
+                else if (userControl == "Product")
+                {
+                    this.CurView.Content = new ProductManagementView();
+                }
+                else if (userControl == "Revenue")
+                {
+                    this.CurView.Content = new RevenueReportView();
+                }
+                else if (userControl == "Statistics")
+                {
+                    this.CurView.Content = new StatisticsReportView();
+                }
+                else if (userControl == "Trending")
+                {
+                    this.CurView.Content = new TrendingProductView();
+                }
+            }
+            else this.CurView.Content = new HomeView();
         }
 
         private void Main_W_MouseDown(object sender, MouseButtonEventArgs e)
@@ -72,38 +100,61 @@ namespace MyShop.Views
         {
             HomeView homeView = new HomeView();
             this.CurView.Content = homeView;
+            var config = ConfigurationManager.OpenExeConfiguration(
+                        ConfigurationUserLevel.None);
+            config.AppSettings.Settings["CurrentUserControl"].Value = "Home";
+            config.Save(ConfigurationSaveMode.Full);
+            ConfigurationManager.RefreshSection("appSettings");
         }
         private void NavigateOrderManagementView(object sender, RoutedEventArgs e)
         {
             OrderManagementView homeView = new OrderManagementView();
             this.CurView.Content = homeView;
+            var config = ConfigurationManager.OpenExeConfiguration(
+                        ConfigurationUserLevel.None);
+            config.AppSettings.Settings["CurrentUserControl"].Value = "Order";
+            config.Save(ConfigurationSaveMode.Full);
+            ConfigurationManager.RefreshSection("appSettings");
         }
         private void NavigateProductManagementView(object sender, RoutedEventArgs e)
         {
             ProductManagementView homeView = new ProductManagementView();
             this.CurView.Content = homeView;
+            var config = ConfigurationManager.OpenExeConfiguration(
+                        ConfigurationUserLevel.None);
+            config.AppSettings.Settings["CurrentUserControl"].Value = "Product";
+            config.Save(ConfigurationSaveMode.Full);
+            ConfigurationManager.RefreshSection("appSettings");
         }
         private void NavigateRevenueReportView(object sender, RoutedEventArgs e)
         {
             RevenueReportView homeView = new RevenueReportView();
             this.CurView.Content = homeView;
+            var config = ConfigurationManager.OpenExeConfiguration(
+                        ConfigurationUserLevel.None);
+            config.AppSettings.Settings["CurrentUserControl"].Value = "Revenue";
+            config.Save(ConfigurationSaveMode.Full);
+            ConfigurationManager.RefreshSection("appSettings");
         }
         private void NavigateStatisticsReport(object sender, RoutedEventArgs e)
         {
             StatisticsReportView homeView = new StatisticsReportView();
             this.CurView.Content = homeView;
+            var config = ConfigurationManager.OpenExeConfiguration(
+                        ConfigurationUserLevel.None);
+            config.AppSettings.Settings["CurrentUserControl"].Value = "Statistics";
+            config.Save(ConfigurationSaveMode.Full);
+            ConfigurationManager.RefreshSection("appSettings");
         }
-
-        private void NavigateCustomerManagement(object sender, RoutedEventArgs e)
-        {
-            CustomerView customerView = new CustomerView();
-            this.CurView.Content = customerView;
-        }
-
         private void NavigateTrendingProduct(object sender, RoutedEventArgs e)
         {
             TrendingProductView homeView = new TrendingProductView();
             this.CurView.Content = homeView;
+            var config = ConfigurationManager.OpenExeConfiguration(
+                        ConfigurationUserLevel.None);
+            config.AppSettings.Settings["CurrentUserControl"].Value = "Trending";
+            config.Save(ConfigurationSaveMode.Full);
+            ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }

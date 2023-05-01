@@ -1,5 +1,10 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
+using MyShop.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,16 +28,6 @@ namespace MyShop.Views.ContentView
         public HomeView()
         {
             InitializeComponent();
-        }
-
-        private void GridBarraTitulo_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void ButtonFechar_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

@@ -175,47 +175,51 @@ namespace MyShop.Models.DAL
         }
         public List<double> GetRevenueFromTo()
         {
-
-            DateTime endDate = new DateTime(2023, 4, 30);
-            DateTime startDate = new DateTime(2023, 4, 11);
-
-
-            List<double> revenueList = new List<double>();
-
-            for (int i = 0; i < 20; i++)
+            using (var _dbContext = new MyShopDbContext())
             {
-                DateTime date = endDate.AddDays(-i); // Calculate the date for each of the past 30 days
-                decimal revenue = _dbContext.Orders
-                    .Where(o => o.Status == "delivered" && o.UpdatedAt.Date == date)
-                    .SelectMany(o => o.OrderItems)
-                    .Sum(oi => oi.Price * oi.Quantity); // Calculate the revenue for the day
+                DateTime endDate = new DateTime(2023, 4, 30);
+                DateTime startDate = new DateTime(2023, 4, 11);
 
-                revenueList.Insert(0, (double)revenue); // Insert the revenue at the beginning of the list
+
+                List<double> revenueList = new List<double>();
+
+                for (int i = 0; i < 20; i++)
+                {
+                    DateTime date = endDate.AddDays(-i); // Calculate the date for each of the past 30 days
+                    decimal revenue = _dbContext.Orders
+                        .Where(o => o.Status == "delivered" && o.UpdatedAt.Date == date)
+                        .SelectMany(o => o.OrderItems)
+                        .Sum(oi => oi.Price * oi.Quantity); // Calculate the revenue for the day
+
+                    revenueList.Insert(0, (double)revenue); // Insert the revenue at the beginning of the list
+                }
+
+                return revenueList;
             }
-
-            return revenueList;
         }
         public List<double> GetRevenueMonth4()
         {
-
-            DateTime endDate = new DateTime(2023, 4, 30);
-            DateTime startDate = new DateTime(2023, 4, 1);
-
-
-            List<double> revenueList = new List<double>();
-
-            for (int i = 0; i < 30; i++)
+            using (var _dbContext = new MyShopDbContext())
             {
-                DateTime date = endDate.AddDays(-i); // Calculate the date for each of the past 30 days
-                decimal revenue = _dbContext.Orders
-                    .Where(o => o.Status == "delivered" && o.UpdatedAt.Date == date)
-                    .SelectMany(o => o.OrderItems)
-                    .Sum(oi => oi.Price * oi.Quantity); // Calculate the revenue for the day
+                DateTime endDate = new DateTime(2023, 4, 30);
+                DateTime startDate = new DateTime(2023, 4, 1);
 
-                revenueList.Insert(0, (double)revenue); // Insert the revenue at the beginning of the list
+
+                List<double> revenueList = new List<double>();
+
+                for (int i = 0; i < 30; i++)
+                {
+                    DateTime date = endDate.AddDays(-i); // Calculate the date for each of the past 30 days
+                    decimal revenue = _dbContext.Orders
+                        .Where(o => o.Status == "delivered" && o.UpdatedAt.Date == date)
+                        .SelectMany(o => o.OrderItems)
+                        .Sum(oi => oi.Price * oi.Quantity); // Calculate the revenue for the day
+
+                    revenueList.Insert(0, (double)revenue); // Insert the revenue at the beginning of the list
+                }
+
+                return revenueList;
             }
-
-            return revenueList;
         }
         public List<double> GetRevenueLastYear()
         {
