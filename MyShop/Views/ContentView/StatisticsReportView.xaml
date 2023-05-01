@@ -21,8 +21,9 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom" Grid.ColumnSpan="2">
+        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom" Grid.Row="1" Grid.ColumnSpan="3">
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Title="Month-Day" Labels="{Binding Dates}" MaxWidth="120"></lvc:Axis>
             </lvc:CartesianChart.AxisX>
@@ -31,7 +32,7 @@
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
 
-        <lvc:CartesianChart Series="{Binding SeriesCollection1}" LegendLocation="Bottom" Grid.Row="1" Grid.ColumnSpan="2">
+        <lvc:CartesianChart Series="{Binding SeriesCollection1}" LegendLocation="Bottom" Grid.ColumnSpan="3">
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Title="Month-Day" Labels="{Binding Dates1}" MaxWidth="120"></lvc:Axis>
             </lvc:CartesianChart.AxisX>
@@ -39,8 +40,16 @@
                 <lvc:Axis Title="Revenue" Labels="{Binding Values}"></lvc:Axis>
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
+        <lvc:CartesianChart Series="{Binding Collection4}" LegendLocation="Bottom" Grid.Row="2" Grid.ColumnSpan="3">
+            <lvc:CartesianChart.AxisX>
+                <lvc:Axis Title="Month-Year" Labels="{Binding Dates4}" MaxWidth="120"></lvc:Axis>
+            </lvc:CartesianChart.AxisX>
+            <lvc:CartesianChart.AxisY>
+                <lvc:Axis Title="Revenue" Labels="{Binding Values}"></lvc:Axis>
+            </lvc:CartesianChart.AxisY>
+        </lvc:CartesianChart>
         
-        <lvc:CartesianChart Series="{Binding SeriesCollection2}" LegendLocation="Bottom" Grid.Row="2" Grid.ColumnSpan="2">
+        <lvc:CartesianChart Series="{Binding SeriesCollection2}" LegendLocation="Bottom" Grid.Row="3" Grid.ColumnSpan="3">
             <lvc:CartesianChart.AxisX>
                 <lvc:Axis Title="Month-Year" Labels="{Binding Dates2}" MaxWidth="120"></lvc:Axis>
             </lvc:CartesianChart.AxisX>

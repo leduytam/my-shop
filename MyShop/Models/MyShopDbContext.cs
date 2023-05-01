@@ -31,8 +31,7 @@ public partial class MyShopDbContext : DbContext
     public virtual DbSet<OrderItem> OrderItems { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-
-        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-BMIIIVS9;User ID = sa; Password = toan123456;Initial Catalog=my_shop_db;Integrated Security=True;TrustServerCertificate = True");
+        => optionsBuilder.UseSqlServer("Data Source=ANONYMOUS\\LOL;User ID = sa; Password = ka123;Initial Catalog=my_shop_db;Integrated Security=True;TrustServerCertificate = True");
     //optionsBuilder.UseSqlServer(ConfigurationManager.ConnectionStrings["my_shop_db"].ConnectionString);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
