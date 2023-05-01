@@ -340,5 +340,34 @@ namespace MyShop.Models.DAL
                 return totalPrice;
             }
         }
+        public List<int> GetNumberOfBookSoldByDay(string bookName, DateTime fromDate, DateTime toDate)
+        {
+            var bookSoldByDay = _dbContext.OrderItems
+                .Where(oi => oi.Book.Name == bookName && oi.Order.CreatedAt >= fromDate && oi.Order.CreatedAt <= toDate)
+                .GroupBy(oi => oi.Order.CreatedAt.Date)
+                .Select(g => g.Sum(oi => oi.Quantity))
+                .ToList();
+
+            return bookSoldByDay;
+        }
+        public List<int> GetBookSalesByDay(string bookName, DateTime startDate, DateTime endDate)
+        {
+            List<int> salesByDay = new List<int>();
+
+            // Loop through each day within the date range
+            for (DateTime date = startDate.Date; date <= endDate.Date; date = date.AddDays(1))
+            {
+                // Count the number of books sold for the given book name on this day
+                int booksSold = _dbContext.OrderItems
+                    .Where(oi => oi.Book.Name == bookName && oi.Order.CreatedAt.Date == date)
+                    .Sum(oi => oi.Quantity);
+
+                // Add the number of books sold to the salesByDay list
+                salesByDay.Add(booksSold);
+            }
+
+            return salesByDay;
+        }
+
     }
 }

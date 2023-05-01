@@ -11,51 +11,107 @@
     <UserControl.DataContext>
         <ViewModels:StastisticsReportViewModel/>
     </UserControl.DataContext>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom" Grid.Row="1" Grid.ColumnSpan="3">
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Month-Day" Labels="{Binding Dates}" MaxWidth="120"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Revenue" Labels="{Binding Values}"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
+    <ScrollViewer VerticalScrollBarVisibility="Visible">
+        <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom" Grid.Row="1" Grid.ColumnSpan="3" Height="200">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Month-Day" Labels="{Binding Dates}" MaxWidth="120"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Revenue" Labels="{Binding Values}"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
 
-        <lvc:CartesianChart Series="{Binding SeriesCollection1}" LegendLocation="Bottom" Grid.ColumnSpan="3">
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Month-Day" Labels="{Binding Dates1}" MaxWidth="120"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Revenue" Labels="{Binding Values}"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
-        <lvc:CartesianChart Series="{Binding Collection4}" LegendLocation="Bottom" Grid.Row="2" Grid.ColumnSpan="3">
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Month-Year" Labels="{Binding Dates4}" MaxWidth="120"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Revenue" Labels="{Binding Values}"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
-        
-        <lvc:CartesianChart Series="{Binding SeriesCollection2}" LegendLocation="Bottom" Grid.Row="3" Grid.ColumnSpan="3">
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Month-Year" Labels="{Binding Dates2}" MaxWidth="120"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Revenue" Labels="{Binding Values}"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
-    </Grid>
+                <lvc:CartesianChart Series="{Binding SeriesCollection1}" LegendLocation="Bottom" Grid.ColumnSpan="3" Height="200">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Month-Day" Labels="{Binding Dates1}" MaxWidth="120"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Revenue" Labels="{Binding Values}"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+                <lvc:CartesianChart Series="{Binding Collection4}" LegendLocation="Bottom" Grid.Row="2" Grid.ColumnSpan="3" Height="200">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Month-Year" Labels="{Binding Dates4}" MaxWidth="120"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Revenue" Labels="{Binding Values}"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+
+                <lvc:CartesianChart Series="{Binding SeriesCollection2}" LegendLocation="Bottom" Grid.Row="3" Grid.ColumnSpan="3" Height="200">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Month-Year" Labels="{Binding Dates2}" MaxWidth="120"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Revenue" Labels="{Binding Values}"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+                <StackPanel Grid.Row="4" Grid.ColumnSpan="3">
+                    
+                </StackPanel>
+            </Grid>
+            <TextBlock Text="Select a book to show statistics" FontSize="30" Padding="10"/>
+            <ComboBox ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" SelectionChanged="ComboBox_SelectionChanged"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <lvc:CartesianChart Series="{Binding CollectionFromTo}" LegendLocation="Bottom"  Grid.ColumnSpan="3" Height="200">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Month-Day" Labels="{Binding DatesFromTo}" MaxWidth="120"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Number of books" Labels="From to"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+
+                <lvc:CartesianChart Series="{Binding CollectionWeek}" LegendLocation="Bottom" Grid.ColumnSpan="3" Grid.Row="1" Height="200">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Month-Day" Labels="{Binding DatesWeek}" MaxWidth="120"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Number of books" Labels="Week"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+                <lvc:CartesianChart Series="{Binding CollectionMonth}" LegendLocation="Bottom" Grid.Row="2" Grid.ColumnSpan="3" Height="200">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Month-Year" Labels="{Binding DatesMonth}" MaxWidth="120"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Number of books" Labels="Month 4"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+                <lvc:CartesianChart Series="{Binding CollectionYear}" LegendLocation="Bottom" Grid.Row="3" Grid.ColumnSpan="3" Height="200">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Month-Year" Labels="{Binding DatesYear}" MaxWidth="120"></lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Number of books" Labels="Last year"></lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

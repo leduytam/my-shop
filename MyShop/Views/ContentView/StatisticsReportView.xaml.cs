@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyShop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,12 @@ namespace MyShop.Views.ContentView
         public StatisticsReportView()
         {
             InitializeComponent();
+            DataContext = new StastisticsReportViewModel();
+        }
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var viewModel = (StastisticsReportViewModel)DataContext;
+            viewModel.OnItemSelected();
         }
     }
 }
