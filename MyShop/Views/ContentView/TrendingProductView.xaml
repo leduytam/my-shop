@@ -20,16 +20,78 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <lvc:PieChart Series="{Binding TrendingBookDay}">
-            <lvc:PieChart.LegendLocation>Left</lvc:PieChart.LegendLocation>
-        </lvc:PieChart>
-        <lvc:PieChart Grid.Row="1" Series="{Binding TrendingBookMonth}">
-            <lvc:PieChart.LegendLocation>Left</lvc:PieChart.LegendLocation>
-        </lvc:PieChart>
-        <lvc:PieChart Grid.Row="2" Series="{Binding TrendingBookYear}">
-            <lvc:PieChart.LegendLocation>Left</lvc:PieChart.LegendLocation>
-        </lvc:PieChart>
+        <Border x:Name="BorderG1" Background="White" BorderThickness="2" BorderBrush="Black">
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Sản phẩm bán chạy trong tuần này" HorizontalAlignment="Center" FontSize="18" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
+                <lvc:PieChart Series="{Binding TrendingBookDay}" Grid.Row="1">
+                    <lvc:PieChart.LegendLocation>Right</lvc:PieChart.LegendLocation>
+                </lvc:PieChart>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Background="White" BorderThickness="2" BorderBrush="Black">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Sản phẩm bán chạy trong tháng này" HorizontalAlignment="Center" FontSize="18" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
+                <lvc:PieChart Grid.Row="1" Series="{Binding TrendingBookMonth}">
+                    <lvc:PieChart.LegendLocation>Right</lvc:PieChart.LegendLocation>
+                </lvc:PieChart>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Background="White" BorderThickness="2" BorderBrush="Black">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Sản phẩm bán chạy trong năm này" HorizontalAlignment="Center" FontSize="18" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
+                <lvc:PieChart Grid.Row="2" Series="{Binding TrendingBookYear}">
+                    <lvc:PieChart.LegendLocation>Right</lvc:PieChart.LegendLocation>
+                </lvc:PieChart>
+            </Grid>
+        </Border>
+        <Border Grid.Row="0" Grid.Column="1" Background="White" BorderThickness="2" BorderBrush="Black">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Sản phẩm bán chạy trong 7 ngày gần đây" HorizontalAlignment="Center" FontSize="18" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
+                <lvc:PieChart Grid.Row="1" Series="{Binding TrendingBook7Days}">
+                    <lvc:PieChart.LegendLocation>Right</lvc:PieChart.LegendLocation>
+                </lvc:PieChart>
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="1" Background="White" BorderThickness="2" BorderBrush="Black">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Sản phẩm bán chạy trong 30 ngày gần đây" HorizontalAlignment="Center" FontSize="18" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
+                <lvc:PieChart Grid.Row="1" Grid.Column="1" Series="{Binding TrendingBook30Days}">
+                    <lvc:PieChart.LegendLocation>Right</lvc:PieChart.LegendLocation>
+                </lvc:PieChart>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="1" Background="White" BorderThickness="2" BorderBrush="Black">
+            <Grid Grid.Row="2" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Sản phẩm bán chạy trong 365 ngày gần đây" HorizontalAlignment="Center" FontSize="18" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
+                <lvc:PieChart Grid.Row="2" Grid.Column="1" Series="{Binding TrendingBook365Days}">
+                    <lvc:PieChart.LegendLocation>Right</lvc:PieChart.LegendLocation>
+                </lvc:PieChart>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

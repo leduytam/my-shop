@@ -13,6 +13,7 @@
     </UserControl.DataContext>
     <ScrollViewer VerticalScrollBarVisibility="Visible">
         <StackPanel>
+            <TextBlock Text="Revenue Statistics" HorizontalAlignment="Center" FontSize="30" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -26,6 +27,11 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
+                <Border BorderBrush="Black" BorderThickness="2" Background="White" Grid.ColumnSpan="3"></Border>
+                <Border BorderBrush="Black" BorderThickness="2" Background="White" Grid.ColumnSpan="3" Grid.Row="1"></Border>
+                <Border BorderBrush="Black" BorderThickness="2" Background="White" Grid.ColumnSpan="3" Grid.Row="2"></Border>
+                <Border BorderBrush="Black" BorderThickness="2" Background="White" Grid.ColumnSpan="3" Grid.Row="3"></Border>
+                
                 <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom" Grid.Row="1" Grid.ColumnSpan="3" Height="200">
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Title="Month-Day" Labels="{Binding Dates}" MaxWidth="120"></lvc:Axis>
@@ -64,7 +70,7 @@
                     
                 </StackPanel>
             </Grid>
-            <TextBlock Text="Select a book to show statistics" FontSize="30" Padding="10"/>
+            <TextBlock Text="Select a book to show statistics" HorizontalAlignment="Center" FontSize="38" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
             <ComboBox ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" SelectionChanged="ComboBox_SelectionChanged"/>
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -78,7 +84,13 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <lvc:CartesianChart Series="{Binding CollectionFromTo}" LegendLocation="Bottom"  Grid.ColumnSpan="3" Height="200">
+
+                <Border BorderBrush="Black" BorderThickness="2" Background="White" Grid.ColumnSpan="3"></Border>
+                <Border BorderBrush="Black" BorderThickness="2" Background="White" Grid.ColumnSpan="3" Grid.Row="1"></Border>
+                <Border BorderBrush="Black" BorderThickness="2" Background="White" Grid.ColumnSpan="3" Grid.Row="2"></Border>
+                <Border BorderBrush="Black" BorderThickness="2" Background="White" Grid.ColumnSpan="3" Grid.Row="3"></Border>
+
+                <lvc:CartesianChart Series="{Binding CollectionFromTo}" LegendLocation="Bottom" Height="200" Grid.ColumnSpan="3">
                     <lvc:CartesianChart.AxisX>
                         <lvc:Axis Title="Month-Day" Labels="{Binding DatesFromTo}" MaxWidth="120"></lvc:Axis>
                     </lvc:CartesianChart.AxisX>

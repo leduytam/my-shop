@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using static OfficeOpenXml.ExcelErrorValue;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MyShop.ViewModels
 {
@@ -21,9 +22,11 @@ namespace MyShop.ViewModels
         public bool isAdd = false;
         private Order _order;
         private List<string> _users = new List<string>();
+        private BookDAO _bookDao = new BookDAO();
         private OrderDAO _orderDAO = new OrderDAO();
         private AccountDAO _accountDAO = new AccountDAO();
         private decimal _totalPrice = 0;
+        private int _totalItems = 0;
         public decimal TotalPrice
         {
             get => _totalPrice; set
@@ -37,7 +40,8 @@ namespace MyShop.ViewModels
             get => _order; set
             {
                 _order = value;
-                GetAddableBookNameAndQuantity(value.Id);
+                ListAddableProduct = FiltedBooks(Keyword, CurrentPage);
+                _totalItems = ListAddableProduct.Count;
                 GetBookNameAndQuantity(value.Id);
                 TotalPrice = _orderDAO.TotalPrice(value.Id);
                 _orderDAO.UpdateOrder(value);
@@ -66,7 +70,8 @@ namespace MyShop.ViewModels
             }
         }
         private ObservableCollection<BookNameQuantity> _listProduct = new ObservableCollection<BookNameQuantity>();
-        public ObservableCollection<BookNameQuantity> ListProduct {
+        public ObservableCollection<BookNameQuantity> ListProduct
+        {
             get => _listProduct;
             set
             {
@@ -100,38 +105,78 @@ namespace MyShop.ViewModels
                 ListProduct.Insert(0, new BookNameQuantity(item.BookId, item.BookName, item.Quantity));
             }
         }
-        public void GetAddableBookNameAndQuantity(Guid orderId)
+        private int _itemPerPage = 5;
+
+        public int ItemPerPage
         {
-            ListAddableProduct.Clear();
-            using (var db = new MyShopDbContext())
+            get { return _itemPerPage; }
+            set
             {
-
-                // Get all book names and IDs
-                var allBooks = from b in db.Books
-                               select new { b.Name, b.Id };
-
-                // Get book IDs in the given order
-                var orderBookIds = from oi in db.OrderItems
-                                   where oi.OrderId == orderId
-                                   select oi.BookId;
-
-                // Get book names and IDs that are not in the order
-                var newBooks = allBooks.Where(b => !orderBookIds.Contains(b.Id));
-
-                // Add all book names and IDs to the list
-                foreach (var item in newBooks)
-                {
-                    ListAddableProduct.Insert(0, new BookNameQuantity(item.Id, item.Name, 1));
-                }
+                _itemPerPage = value;
+                OnPropertyChanged(nameof(ItemPerPage));
             }
         }
+        private int _totalPages = 0;
+        private int _curPage = 0;
+        private string _curKeyword = "";
+        public string Keyword
+        {
+            get => _curKeyword;
+            set
+            {
+                _curPage = 0;
+                PageItems = _curPage;
+                _curKeyword = value;
+                OnPropertyChanged("Keyword");
+                ListAddableProduct = FiltedBooks(value, _curPage);
+            }
+        }
+        public int PageItems { get => _curPage; set { _curPage = value; OnPropertyChanged("PageItems"); } }
         public ICommand SaveCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
         public ICommand IncreaseCommand { get; set; }
         public ICommand DecreaseCommand { get; set; }
         public ICommand AddCommand { get; set; }
         public ICommand CloseCommand { get; set; }
-        public class BookNameQuantity: INotifyPropertyChanged
+        public ICommand FirstPageCommand { get; set; }
+        public ICommand PreviousPageCommand { get; set; }
+        public ICommand NextPageCommand { get; set; }
+        public ICommand LastPageCommand { get; set; }
+        public ObservableCollection<BookNameQuantity> FiltedBooks(string keyword, int currentPage)
+        {
+            IEnumerable<Book> list;
+            List<Book> listBooksGenre = new List<Book>();
+
+            if (currentPage >= 0)
+            {
+                listBooksGenre = _bookDao.GetBooksNotInOrder(Order.Id);
+
+                list = listBooksGenre.Where(
+                        item => item.Name.Contains(keyword))
+                    .Where(item => item.IsDeleted == false);
+                _totalPages = (list.Count() % _itemPerPage == 0 ? 0 : 1) + list.Count() / _itemPerPage;
+                list = list.Skip(currentPage * _itemPerPage).Take(_itemPerPage);
+
+                return new ObservableCollection<BookNameQuantity>(
+                    list.Select(book => new BookNameQuantity(book.Id, book.Name, book.Quantity)));
+            }
+            else
+            {
+                listBooksGenre = _bookDao.GetBooksNotInOrder(Order.Id);
+
+                list = listBooksGenre.Where(
+                        item => item.Name.Contains(keyword))
+                    .Where(item => item.IsDeleted == false);
+                int lastPage = (list.Count() % _itemPerPage == 0 ? 0 : 1) + list.Count() / _itemPerPage;
+                list = list.Skip((lastPage - 1) * _itemPerPage).Take(_itemPerPage);
+                _curPage = lastPage - 1;
+                _totalPages = lastPage - 1;
+
+                return new ObservableCollection<BookNameQuantity>(
+                    list.Select(book => new BookNameQuantity(book.Id, book.Name, book.Quantity)));
+            }
+        }
+        public class BookNameQuantity : INotifyPropertyChanged
         {
             public Guid BookId { get; set; }
             private string _bookName;
@@ -161,7 +206,7 @@ namespace MyShop.ViewModels
             }
         }
         private int _currenPage = 0;
-        private int _itemsPerPage = 6;
+        private int _itemsPerPage = 5;
         public int CurrentPage
         {
             get => _currenPage; set
@@ -189,7 +234,9 @@ namespace MyShop.ViewModels
                 Order.UpdatedAt = DateTime.Now;
                 _orderDAO.UpdateOrder(Order);
                 GetBookNameAndQuantity(Order.Id);
-                GetAddableBookNameAndQuantity(Order.Id);
+                Keyword = "";
+                CurrentPage = 0;
+                ListAddableProduct = FiltedBooks(Keyword, CurrentPage);
                 TotalPrice = _orderDAO.TotalPrice(Order.Id);
                 MessageBox.Show("Delete successful");
                 OnPropertyChanged("Order");
@@ -235,7 +282,9 @@ namespace MyShop.ViewModels
                 Order.UpdatedAt = DateTime.Now;
                 _orderDAO.UpdateOrder(Order);
                 GetBookNameAndQuantity(Order.Id);
-                GetAddableBookNameAndQuantity(Order.Id);
+                Keyword = "";
+                CurrentPage = 0;
+                ListAddableProduct = FiltedBooks(Keyword, CurrentPage);
                 TotalPrice = _orderDAO.TotalPrice(Order.Id);
                 MessageBox.Show("Add successful");
                 OnPropertyChanged("Order");
@@ -255,6 +304,37 @@ namespace MyShop.ViewModels
                     }
                     p.Close();
                 }
+            });
+            FirstPageCommand = new RelayCommand<object>(p =>
+            {
+                _curPage = 0;
+                ListAddableProduct = FiltedBooks(_curKeyword, _curPage);
+                _totalItems = ListAddableProduct.Count;
+                _totalPages = (_totalItems % _itemPerPage == 0 ? 0 : 1) + _totalItems / _itemPerPage;
+                PageItems = _curPage;
+            });
+            LastPageCommand = new RelayCommand<Button>(p =>
+            {
+                ListAddableProduct = FiltedBooks(_curKeyword, -1);
+
+                _totalItems = ListAddableProduct.Count;
+                _totalPages = (_totalItems % _itemPerPage == 0 ? 0 : 1) + _totalItems / _itemPerPage;
+
+                PageItems = _curPage;
+            });
+            PreviousPageCommand = new RelayCommand<Button>(p =>
+            {
+                --_curPage;
+                if (_curPage < 0) { ++_curPage; return; }
+                ListAddableProduct = FiltedBooks(_curKeyword, _curPage);
+                PageItems = _curPage;
+            });
+            NextPageCommand = new RelayCommand<Button>(p =>
+            {
+                ++_curPage;
+                if (_curPage > _totalPages - 1) { --_curPage; return; }
+                ListAddableProduct = FiltedBooks(_curKeyword, _curPage);
+                PageItems = _curPage;
             });
         }
     }

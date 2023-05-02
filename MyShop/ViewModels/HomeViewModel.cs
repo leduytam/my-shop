@@ -29,7 +29,7 @@ namespace MyShop.ViewModels
         public int OrderWeekCount { get => _orderWeekCount; set { _orderWeekCount = value; OnPropertyChanged("OrderWeekCount"); } }
         public int OrderMonthCount { get => _orderMonthCount; set { _orderMonthCount = value; OnPropertyChanged("OrderMonthCount"); } }
         public List<Book> LowQuantityBooks { get => lowQuantityBooks; set { lowQuantityBooks = value; OnPropertyChanged("LowQuantityBooks"); } }
-        private string _backGroundPath = "/images/general/background.jpg";
+        private string _backGroundPath = "images/general/background.jpg";
         public string BackGroundPath
         {
             get { return _backGroundPath; }

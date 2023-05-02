@@ -135,14 +135,15 @@ namespace MyShop.Models.DAL
                                  .ToList();
             }
         }
-        public List<(string Name, int Quantity)> GetTop5BooksInCurrentDay()
+        public List<(string Name, int Quantity)> GetTop5BooksInCurrentWeek()
         {
             using (var dbContext = new MyShopDbContext())
             {
                 DateTime today = DateTime.UtcNow.Date;
+                DateTime startOfWeek = today.AddDays(-(int)today.DayOfWeek);
 
                 var topBooks = dbContext.OrderItems
-                    .Where(oi => oi.Order.Status == "delivered" && oi.Order.UpdatedAt.Date == today)
+                    .Where(oi => oi.Order.Status == "delivered" && oi.Order.UpdatedAt.Date >= startOfWeek && oi.Order.UpdatedAt.Date <= today)
                     .GroupBy(oi => oi.Book)
                     .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
                     .OrderByDescending(b => b.Quantity)
@@ -156,21 +157,18 @@ namespace MyShop.Models.DAL
         {
             using (var dbContext = new MyShopDbContext())
             {
-                var firstDayOfMonth = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1);
-                var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+                DateTime today = DateTime.UtcNow.Date;
+                DateTime startOfMonth = new DateTime(today.Year, today.Month, 1);
 
-                using (var db = new MyShopDbContext())
-                {
-                    var topBooks = db.OrderItems
-                        .Where(oi => oi.Order.CreatedAt >= firstDayOfMonth && oi.Order.CreatedAt <= lastDayOfMonth)
-                        .GroupBy(oi => oi.Book)
-                        .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
-                        .OrderByDescending(b => b.Quantity)
-                        .Take(5)
-                        .ToList();
+                var topBooks = dbContext.OrderItems
+                    .Where(oi => oi.Order.Status == "delivered" && oi.Order.UpdatedAt.Date >= startOfMonth && oi.Order.UpdatedAt.Date <= today)
+                    .GroupBy(oi => oi.Book)
+                    .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
+                    .OrderByDescending(b => b.Quantity)
+                    .Take(5)
+                    .ToList();
 
-                    return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
-                }
+                return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
             }
         }
 
@@ -178,22 +176,18 @@ namespace MyShop.Models.DAL
         {
             using (var dbContext = new MyShopDbContext())
             {
-                DateTime now = DateTime.Now;
-                DateTime startOfYear = new DateTime(now.Year, 1, 1);
-                DateTime endOfYear = startOfYear.AddYears(1).AddDays(-1);
+                DateTime today = DateTime.UtcNow.Date;
+                DateTime startOfYear = new DateTime(today.Year, 1, 1);
 
-                using (var db = new MyShopDbContext())
-                {
-                    var topBooks = db.OrderItems
-                        .Where(oi => oi.Order.CreatedAt >= startOfYear && oi.Order.CreatedAt <= endOfYear)
-                        .GroupBy(oi => oi.Book)
-                        .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
-                        .OrderByDescending(b => b.Quantity)
-                        .Take(5)
-                        .ToList();
+                var topBooks = dbContext.OrderItems
+                    .Where(oi => oi.Order.Status == "delivered" && oi.Order.UpdatedAt.Date >= startOfYear && oi.Order.UpdatedAt.Date <= today)
+                    .GroupBy(oi => oi.Book)
+                    .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
+                    .OrderByDescending(b => b.Quantity)
+                    .Take(5)
+                    .ToList();
 
-                    return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
-                }
+                return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
             }
         }
 
@@ -209,6 +203,80 @@ namespace MyShop.Models.DAL
                     .ToList();
 
                 return topBooks.Select(x => (x.BookName, x.Quantity)).ToList();
+            }
+        }
+
+        public List<(string Name, int Quantity)> GetTop5BooksInLast7Days()
+        {
+            using (var dbContext = new MyShopDbContext())
+            {
+                DateTime today = DateTime.UtcNow.Date;
+                DateTime startOfLast7Days = today.AddDays(-6);
+
+                var topBooks = dbContext.OrderItems
+                    .Where(oi => oi.Order.Status == "delivered" && oi.Order.UpdatedAt.Date >= startOfLast7Days && oi.Order.UpdatedAt.Date <= today)
+                    .GroupBy(oi => oi.Book)
+                    .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
+                    .OrderByDescending(b => b.Quantity)
+                    .Take(5)
+                    .ToList();
+
+                return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
+            }
+        }
+
+        public List<(string Name, int Quantity)> GetTop5BooksInLast30Days()
+        {
+            using (var dbContext = new MyShopDbContext())
+            {
+                DateTime today = DateTime.UtcNow.Date;
+                DateTime startOfLast30Days = today.AddDays(-29);
+
+                var topBooks = dbContext.OrderItems
+                    .Where(oi => oi.Order.Status == "delivered" && oi.Order.UpdatedAt.Date >= startOfLast30Days && oi.Order.UpdatedAt.Date <= today)
+                    .GroupBy(oi => oi.Book)
+                    .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
+                    .OrderByDescending(b => b.Quantity)
+                    .Take(5)
+                    .ToList();
+
+                return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
+            }
+        }
+
+        public List<(string Name, int Quantity)> GetTop5BooksInLast365Days()
+        {
+            using (var dbContext = new MyShopDbContext())
+            {
+                DateTime today = DateTime.UtcNow.Date;
+                DateTime startOfLast365Days = today.AddDays(-364);
+
+                var topBooks = dbContext.OrderItems
+                    .Where(oi => oi.Order.Status == "delivered" && oi.Order.UpdatedAt.Date >= startOfLast365Days && oi.Order.UpdatedAt.Date <= today)
+                    .GroupBy(oi => oi.Book)
+                    .Select(g => new { Name = g.Key.Name, Quantity = g.Sum(oi => oi.Quantity) })
+                    .OrderByDescending(b => b.Quantity)
+                    .Take(5)
+                    .ToList();
+
+                return topBooks.Select(b => (b.Name, b.Quantity)).ToList();
+            }
+        }
+
+        public List<Book> GetBooksNotInOrder(Guid orderId)
+        {
+            using (var dbContext = new MyShopDbContext())
+            {
+                var orderItemBookIds = dbContext.OrderItems
+                .Where(oi => oi.OrderId == orderId)
+                .Select(oi => oi.BookId)
+                .ToList();
+
+                var booksNotInOrder = dbContext.Books
+                    .Where(b => !orderItemBookIds.Contains(b.Id))
+                    .ToList();
+
+                return booksNotInOrder;
             }
         }
 

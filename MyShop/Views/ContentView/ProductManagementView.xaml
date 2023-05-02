@@ -26,7 +26,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="{Binding Path=BackGroundPath, Converter={StaticResource absoluteConverter}}"/>
+                <ImageBrush ImageSource="/images/general/backgroud.jpg"/>
             </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -46,13 +46,13 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <TextBox
-                Name="Keyword"
-                BorderThickness="2"
-                VerticalAlignment="Top"
-                materialDesign:HintAssist.Hint="Search product"
-                Style="{StaticResource MaterialDesignFilledTextBox}"
-                Text="{Binding Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                TextWrapping="Wrap" />
+                    Name="Keyword"
+                    BorderThickness="2"
+                    VerticalAlignment="Top"
+                    materialDesign:HintAssist.Hint="Search product"
+                    Style="{StaticResource MaterialDesignFilledTextBox}"
+                    Text="{Binding Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    TextWrapping="Wrap" />
                 <ComboBox
                   Grid.Column="1"
                   Margin="10"
@@ -116,15 +116,6 @@
 
             </StackPanel>
             <StackPanel Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="2">
-                <Button
-                  Margin="200 0 200 0"
-                  materialDesign:RippleAssist.Feedback="#DD000000"
-                  Content="Refresh list"
-                  IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                  ToolTip="Resource name: MaterialDesignRaisedSecondaryButton"
-                  Command="{Binding RefreshList}" 
-                  Background="#B9E9FC"/>
-                
                 <TextBlock Text="Danh sách sản phẩm" HorizontalAlignment="Center" FontSize="30" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
                 <StackPanel Margin="0, 20, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Command ="{Binding FirstPageCommand}" Width="100" Height="25" Content="First" Margin="5"
@@ -137,7 +128,6 @@
                         Background="#B9E9FC"></Button>
                     <Button Command ="{Binding LastPageCommand}" Width="100" Height="25" Content="Last"
                         Background="#B9E9FC"></Button>
-
                 </StackPanel>
                 <ComboBox ItemsSource="{Binding PageSizes}" SelectedValue="{Binding ItemPerPage, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>

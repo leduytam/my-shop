@@ -30,26 +30,27 @@ namespace MyShop.Views
             {
                 if (userControl == "Home")
                 {
+                    ControlName.Text = "Home";
                     this.CurView.Content = new HomeView();
                 }
                 else if (userControl == "Order")
                 {
+                    ControlName.Text = "Order Management";
                     this.CurView.Content = new OrderManagementView();
                 }
                 else if (userControl == "Product")
                 {
+                    ControlName.Text = "Product Management";
                     this.CurView.Content = new ProductManagementView();
-                }
-                else if (userControl == "Revenue")
-                {
-                    this.CurView.Content = new RevenueReportView();
                 }
                 else if (userControl == "Statistics")
                 {
+                    ControlName.Text = "Statistics Report";
                     this.CurView.Content = new StatisticsReportView();
                 }
                 else if (userControl == "Trending")
                 {
+                    ControlName.Text = "Trending Product";
                     this.CurView.Content = new TrendingProductView();
                 }
             }
@@ -98,6 +99,7 @@ namespace MyShop.Views
 
         private void NavigateHomeView(object sender, RoutedEventArgs e)
         {
+            ControlName.Text = "Home";
             HomeView homeView = new HomeView();
             this.CurView.Content = homeView;
             var config = ConfigurationManager.OpenExeConfiguration(
@@ -108,6 +110,7 @@ namespace MyShop.Views
         }
         private void NavigateOrderManagementView(object sender, RoutedEventArgs e)
         {
+            ControlName.Text = "Order Management";
             OrderManagementView homeView = new OrderManagementView();
             this.CurView.Content = homeView;
             var config = ConfigurationManager.OpenExeConfiguration(
@@ -118,6 +121,7 @@ namespace MyShop.Views
         }
         private void NavigateProductManagementView(object sender, RoutedEventArgs e)
         {
+            ControlName.Text = "Product Management";
             ProductManagementView homeView = new ProductManagementView();
             this.CurView.Content = homeView;
             var config = ConfigurationManager.OpenExeConfiguration(
@@ -126,18 +130,9 @@ namespace MyShop.Views
             config.Save(ConfigurationSaveMode.Full);
             ConfigurationManager.RefreshSection("appSettings");
         }
-        private void NavigateRevenueReportView(object sender, RoutedEventArgs e)
-        {
-            RevenueReportView homeView = new RevenueReportView();
-            this.CurView.Content = homeView;
-            var config = ConfigurationManager.OpenExeConfiguration(
-                        ConfigurationUserLevel.None);
-            config.AppSettings.Settings["CurrentUserControl"].Value = "Revenue";
-            config.Save(ConfigurationSaveMode.Full);
-            ConfigurationManager.RefreshSection("appSettings");
-        }
         private void NavigateStatisticsReport(object sender, RoutedEventArgs e)
         {
+            ControlName.Text = "Statistics Report";
             StatisticsReportView homeView = new StatisticsReportView();
             this.CurView.Content = homeView;
             var config = ConfigurationManager.OpenExeConfiguration(
@@ -148,6 +143,7 @@ namespace MyShop.Views
         }
         private void NavigateTrendingProduct(object sender, RoutedEventArgs e)
         {
+            ControlName.Text = "Trending Product";
             TrendingProductView homeView = new TrendingProductView();
             this.CurView.Content = homeView;
             var config = ConfigurationManager.OpenExeConfiguration(
@@ -155,6 +151,14 @@ namespace MyShop.Views
             config.AppSettings.Settings["CurrentUserControl"].Value = "Trending";
             config.Save(ConfigurationSaveMode.Full);
             ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        private void logout_btn(object sender, RoutedEventArgs e)
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            this.Close();
+            loginWindow.Show();
+            MessageBox.Show("Logout Successful");
         }
     }
 }

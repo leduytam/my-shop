@@ -32,18 +32,6 @@ namespace MyShop.ViewModels
         private string _genre = "";
         private decimal _curPrice = 0;
         private int _maximumPrice = 500000;
-        private string _backGroundPath = "/images/general/background.jpg";
-        public string BackGroundPath
-        {
-            get { return _backGroundPath; }
-            set
-            {
-
-                _backGroundPath = value;
-                OnPropertyChanged(nameof(BackGroundPath));
-
-            }
-        }
         private int _itemPerPage = 5;
 
         public int ItemPerPage
@@ -122,7 +110,6 @@ namespace MyShop.ViewModels
         public ICommand ShowListGenre { get; set; }
         public ICommand SelectCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
-        public ICommand RefreshList { get; set; }
         public ICommand AddBook { get; set; }
         public ObservableCollection<Book> FiltedBooks(string keyword, int currentPage, string genre, decimal maxPrice)
         {
@@ -251,11 +238,6 @@ namespace MyShop.ViewModels
                 _curPage = 0;
                 ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, _curPrice);
                 PageItems = _curPage;
-            });
-            RefreshList = new RelayCommand<object>(p =>
-            {
-                ListProduct = FiltedBooks(_curKeyword, _curPage, _genre, _curPrice);
-                MessageBox.Show("Data was refreshed");
             });
             AddBook = new RelayCommand<object>(p =>
             {

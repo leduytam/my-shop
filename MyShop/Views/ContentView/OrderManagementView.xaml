@@ -14,6 +14,9 @@
     </UserControl.DataContext>
     <ScrollViewer>
         <DockPanel>
+            <DockPanel.Background>
+                <ImageBrush ImageSource="/images/general/backgroud.jpg"/>
+            </DockPanel.Background>
             <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="From Date: " VerticalAlignment="Center"></TextBlock>
                 <DatePicker Width="200" Margin="10" SelectedDate="{Binding FromDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></DatePicker>
@@ -34,28 +37,30 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ListView Name="ListViewName" ItemsSource="{Binding ListOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="MouseDoubleClick">
-                            <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="{Binding SelectedItem, ElementName=ListViewName}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding RecipientName}" Header="Recipent Name" Width="Auto" />
-                            <GridViewColumn DisplayMemberBinding="{Binding RecipientAddress}" Header="Recipent Address" Width="Auto" />
-                            <GridViewColumn DisplayMemberBinding="{Binding RecipientPhone}" Header="Recipent Phone" Width="Auto" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status" Width="Auto" />
-                            <GridViewColumn Header="Actions">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Delete" Command="{Binding ElementName=ListViewName, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <Border x:Name="BorderG1" CornerRadius="5" Background="#F6F1F1">
+                    <ListView Name="ListViewName" ItemsSource="{Binding ListOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseDoubleClick">
+                                <i:InvokeCommandAction Command="{Binding SelectCommand}" CommandParameter="{Binding SelectedItem, ElementName=ListViewName}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding RecipientName}" Header="Recipent Name" Width="Auto" />
+                                <GridViewColumn DisplayMemberBinding="{Binding RecipientAddress}" Header="Recipent Address" Width="Auto" />
+                                <GridViewColumn DisplayMemberBinding="{Binding RecipientPhone}" Header="Recipent Phone" Width="Auto" />
+                                <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status" Width="Auto" />
+                                <GridViewColumn Header="Actions">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Delete" Command="{Binding ElementName=ListViewName, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Border>
             </StackPanel>
         </DockPanel>
     </ScrollViewer>

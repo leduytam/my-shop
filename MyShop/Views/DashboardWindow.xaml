@@ -70,8 +70,8 @@
                             <Button
                             Margin="0 2 0 2"
                             Style="{StaticResource MaterialDesignRaisedLightButton}"
-                            Click="NavigateRevenueReportView"
-                            Content="Revenue Report">
+                            Click="NavigateStatisticsReport"
+                            Content="Statistics Report">
                                 <Button.ContentTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -98,7 +98,7 @@
                             <Button
                             Margin="0 2 0 2"
                             Style="{StaticResource MaterialDesignRaisedLightButton}"
-                            Command="{Binding Logout}"
+                            Click="logout_btn"
                             Content="Logout">
                                 <Button.ContentTemplate>
                                     <DataTemplate>
@@ -148,10 +148,10 @@
 
                             </StackPanel>
                             <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="25"
-                            Text="My Shop"/>
+                                Name="ControlName"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="25"/>
                         </DockPanel>
                     </materialDesign:ColorZone>
 

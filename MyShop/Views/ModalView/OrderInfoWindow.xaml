@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyShop.Views.ModalView"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Name="Window"
         xmlns:ViewModels="clr-namespace:MyShop.ViewModels"
@@ -66,50 +67,77 @@
                 <TextBlock Margin ="10" Grid.Row="6" Grid.Column="0" Text="Total price: "/>
                 <TextBlock Margin ="10" Grid.Row="6" Grid.Column="1" Text="{Binding TotalPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <ListView Margin ="10" Grid.Row="7" Grid.ColumnSpan="2" Name="ListViewName" ItemsSource="{Binding ListProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding BookName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Book Name" Width="Auto" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Quantity" Width="Auto" />
-                            <GridViewColumn Header="Increase Quantity" Width="180">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Increase" Command="{Binding ElementName=ListViewName, Path=DataContext.IncreaseCommand}" CommandParameter="{Binding}" Click="Button_Click1" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Decrease Quantity" Width="180">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Decrease" Command="{Binding ElementName=ListViewName, Path=DataContext.DecreaseCommand}" CommandParameter="{Binding}" Click="Button_Click1" />
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn Header="Actions">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Delete" Command="{Binding ElementName=ListViewName, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}" Click="Button_Click"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <ListView Margin ="10" Grid.Row="8" Grid.ColumnSpan="2" Name="ListViewName1" ItemsSource="{Binding ListAddableProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding BookName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Book Name" Width="Auto" />
-                            <GridViewColumn Header="Actions">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Add" Command="{Binding ElementName=ListViewName1, Path=DataContext.AddCommand}" CommandParameter="{Binding}" Click="Button_Click"/>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <StackPanel Orientation="Horizontal" Grid.Row="9" Grid.Column="2">
+                <StackPanel Grid.Row="7" Grid.ColumnSpan="2">
+                    <TextBlock Text="Danh sách sản phẩm" HorizontalAlignment="Center" FontSize="30" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
+                    <ListView Margin ="10" Grid.Row="7" Grid.ColumnSpan="2" Name="ListViewName" ItemsSource="{Binding ListProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding BookName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Book Name" Width="Auto" />
+                                <GridViewColumn DisplayMemberBinding="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Quantity" Width="Auto" />
+                                <GridViewColumn Header="Increase Quantity" Width="180">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Increase" Command="{Binding ElementName=ListViewName, Path=DataContext.IncreaseCommand}" CommandParameter="{Binding}" Click="Button_Click1" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Decrease Quantity" Width="180">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Decrease" Command="{Binding ElementName=ListViewName, Path=DataContext.DecreaseCommand}" CommandParameter="{Binding}" Click="Button_Click1" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Actions">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Delete" Command="{Binding ElementName=ListViewName, Path=DataContext.DeleteCommand}" CommandParameter="{Binding}" Click="Button_Click"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+                <StackPanel Grid.Row="8" Grid.ColumnSpan="2">
+                    <TextBlock Text="Danh sách sản phẩm có thể thêm được" HorizontalAlignment="Center" FontSize="30" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
+                    <TextBox
+                        Margin="10 0 10 0"
+                        Name="Keyword"
+                        BorderThickness="2"
+                        VerticalAlignment="Top"
+                        materialDesign:HintAssist.Hint="Search product"
+                        Style="{StaticResource MaterialDesignFilledTextBox}"
+                        Text="{Binding Keyword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        TextWrapping="Wrap" />
+                    <StackPanel Margin="0, 20, 0, 0" Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Command ="{Binding FirstPageCommand}" Width="100" Height="25" Content="First" Margin="5"
+                        Background="#B9E9FC"></Button>
+                        <Button Name ="Prev" Command ="{Binding PreviousPageCommand}" Width="100" Height="25" Content="Previous" Margin="5"
+                        Background="#B9E9FC" ></Button>
+                        <Button Width="50" Height="25" Content="{Binding PageItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5"
+                        Background="#B9E9FC"></Button>
+                        <Button Command ="{Binding NextPageCommand}" Width="100" Height="25" Content="Next" Margin="5"
+                        Background="#B9E9FC"></Button>
+                        <Button Command ="{Binding LastPageCommand}" Width="100" Height="25" Content="Last"
+                        Background="#B9E9FC"></Button>
+                    </StackPanel>
+                    <ListView Margin ="10" Name="ListViewName1" ItemsSource="{Binding ListAddableProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding BookName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Book Name" Width="Auto" />
+                                <GridViewColumn Header="Actions">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Add" Command="{Binding ElementName=ListViewName1, Path=DataContext.AddCommand}" CommandParameter="{Binding}" Click="Button_Click"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Grid.Row="9">
                     <Button Content="Save" Margin="5" Command="{Binding SaveCommand}"/>
                     <Button Content="Close" Margin="5" Command="{Binding CloseCommand}" CommandParameter="{Binding ElementName=Window}"/>
                 </StackPanel>

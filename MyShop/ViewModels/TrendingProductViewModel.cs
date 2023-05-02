@@ -18,28 +18,51 @@ namespace MyShop.ViewModels
         public SeriesCollection TrendingBookDay { get; set; }
         public SeriesCollection TrendingBookMonth { get; set; }
         public SeriesCollection TrendingBookYear { get; set; }
+        public SeriesCollection TrendingBook7Days { get; set; }
+        public SeriesCollection TrendingBook30Days { get; set; }
+        public SeriesCollection TrendingBook365Days { get; set; }
         public TrendingProductViewModel()
         {
-            books = _bookDAO.GetTop5BooksInCurrentDay();
+            books = _bookDAO.GetTop5BooksInCurrentWeek();
             TrendingBookDay = new SeriesCollection();
             for(int i = 0;i < books.Count; i++)
             {
-                var book = books[i];
                 TrendingBookDay.Add(new PieSeries { Title = books[i].Item1, Values = new ChartValues<int> { books[i].Item2 } });
             }
+
             books = _bookDAO.GetTop5BooksCurrentMonth();
             TrendingBookMonth = new SeriesCollection();
             for (int i = 0; i < books.Count; i++)
             {
-                var book = books[i];
                 TrendingBookMonth.Add(new PieSeries { Title = books[i].Item1, Values = new ChartValues<int> { books[i].Item2 } });
             }
+
             books = _bookDAO.GetTop5BooksInCurrentYear();
             TrendingBookYear = new SeriesCollection();
             for (int i = 0; i < books.Count; i++)
             {
-                var book = books[i];
                 TrendingBookYear.Add(new PieSeries { Title = books[i].Item1, Values = new ChartValues<int> { books[i].Item2 } });
+            }
+
+            books = _bookDAO.GetTop5BooksInLast7Days();
+            TrendingBook7Days = new SeriesCollection();
+            for (int i = 0; i < books.Count; i++)
+            {
+                TrendingBook7Days.Add(new PieSeries { Title = books[i].Item1, Values = new ChartValues<int> { books[i].Item2 } });
+            }
+
+            books = _bookDAO.GetTop5BooksInLast30Days();
+            TrendingBook30Days = new SeriesCollection();
+            for (int i = 0; i < books.Count; i++)
+            {
+                TrendingBook30Days.Add(new PieSeries { Title = books[i].Item1, Values = new ChartValues<int> { books[i].Item2 } });
+            }
+
+            books = _bookDAO.GetTop5BooksInLast365Days();
+            TrendingBook365Days = new SeriesCollection();
+            for (int i = 0; i < books.Count; i++)
+            {
+                TrendingBook365Days.Add(new PieSeries { Title = books[i].Item1, Values = new ChartValues<int> { books[i].Item2 } });
             }
         }
     }

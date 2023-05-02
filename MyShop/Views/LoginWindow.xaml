@@ -26,7 +26,7 @@
     </Window.DataContext>
     <Border>
         <Border.Background>
-            <ImageBrush ImageSource="{Binding Path=BackGroundPath, Converter={StaticResource absoluteConverter}}"/>
+            <ImageBrush ImageSource="/images/general/account.jpg"/>
         </Border.Background>
         <Border BorderThickness="5" RenderTransformOrigin="0.500,0.900" Opacity="0.9">
             <Border.BorderBrush>
