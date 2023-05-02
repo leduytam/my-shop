@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyShop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,26 @@ namespace MyShop.Views.ModalView
     /// </summary>
     public partial class ListGenreWindow : Window
     {
+        public static ListGenreWindow register;
         public ListGenreWindow()
         {
             InitializeComponent();
+        }
+
+        private void Genre_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((GenreViewModel)this.DataContext).Genre = ((TextBox)sender).Text;
+            }
+        }
+
+        private void Description_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                ((GenreViewModel)this.DataContext).Description = ((TextBox)sender).Text;
+            }
         }
     }
 }

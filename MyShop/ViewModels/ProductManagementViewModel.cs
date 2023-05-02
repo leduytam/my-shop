@@ -15,8 +15,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using static OfficeOpenXml.ExcelErrorValue;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MyShop.ViewModels
 {

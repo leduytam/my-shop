@@ -136,15 +136,15 @@
                             </StackPanel>
                         </Grid>
                         <Button  
-                       Content="Register"
-                       Width="200"
-                       FontFamily="Montserrat"
-                       Foreground="white"
-                       Background="CornflowerBlue"
-                       BorderThickness="0"
-                       Padding="10"
-                       Margin="20"
-                       Command ="{Binding RegisterCommand}">
+                           Content="Register"
+                           Width="200"
+                           FontFamily="Montserrat"
+                           Foreground="white"
+                           Background="CornflowerBlue"
+                           BorderThickness="0"
+                           Padding="10"
+                           Margin="20"
+                           Command ="{Binding RegisterCommand}">
                             <Button.Resources>
                                 <Style TargetType="{x:Type Border}">
                                     <Setter Property="CornerRadius" Value="7"/>

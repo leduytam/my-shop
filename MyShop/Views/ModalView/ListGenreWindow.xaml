@@ -20,12 +20,39 @@
     </Window.DataContext>
     <ScrollViewer>
         <StackPanel Orientation="Vertical">
-            <TextBlock Text="Danh sách thể loại" HorizontalAlignment="Center" FontSize="30" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Danh sách thể loại" HorizontalAlignment="Center" FontSize="30" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" Foreground="#B3005E" FontWeight="Bold"/>
+                <Button Content="Save" HorizontalAlignment="Right"></Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Thêm thể loại: " HorizontalAlignment="Center" FontSize="20" FontFamily="Champagne &amp; Limousines" Margin="5" VerticalAlignment="Top" FontWeight="Bold"/>
+                <TextBox materialDesign:HintAssist.HelperText="Tên thể loại" Width="200" Margin="10" Text="{Binding Genre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="Genre_TextChanged"></TextBox>
+                <TextBox materialDesign:HintAssist.HelperText="Chi tiết thể loại" Width="400" Margin="10" Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="Description_TextChanged"></TextBox>
+                <Button Content="Add" HorizontalAlignment="Right" Command="{Binding AddCommand}"></Button>
+            </StackPanel>
             <ListView Name="ListViewName" ItemsSource="{Binding ListGenre, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" Width="Auto" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Description" Width="400" />
+                        <GridViewColumn Header="Name" Width="Auto" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="Name:" />
+                                        <TextBox Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Description" Width="400" >
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="Description:" />
+                                        <TextBox Text="{Binding Description}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding CreatedAt}" Header="CreatedAt" Width="Auto" />
                         <GridViewColumn DisplayMemberBinding="{Binding UpdatedAt}" Header="UpdatedAt" Width="Auto" />
                         <GridViewColumn Header="Actions">
