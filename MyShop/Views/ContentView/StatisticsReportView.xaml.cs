@@ -29,7 +29,7 @@ namespace MyShop.Views.ContentView
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var viewModel = (StastisticsReportViewModel)DataContext;
-            viewModel.OnItemSelected();
+            viewModel.OnItemSelectedAsync();
         }
     }
 }

@@ -353,7 +353,7 @@ namespace MyShop.Models.DAL
                 return bookSoldByDay;
             }
         }
-        public List<int> GetBookSalesByDay(string bookName, DateTime startDate, DateTime endDate)
+        public async Task<List<int>> GetBookSalesByDay(string bookName, DateTime startDate, DateTime endDate)
         {
             using (var _dbContext = new MyShopDbContext())
             {
@@ -363,9 +363,9 @@ namespace MyShop.Models.DAL
                 for (DateTime date = startDate.Date; date <= endDate.Date; date = date.AddDays(1))
                 {
                     // Count the number of books sold for the given book name on this day
-                    int booksSold = _dbContext.OrderItems
+                    int booksSold = await _dbContext.OrderItems
                         .Where(oi => oi.Book.Name == bookName && oi.Order.CreatedAt.Date == date)
-                        .Sum(oi => oi.Quantity);
+                        .SumAsync(oi => oi.Quantity);
 
                     // Add the number of books sold to the salesByDay list
                     salesByDay.Add(booksSold);

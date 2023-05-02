@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace MyShop.ViewModels
 {
-    public class HomeViewModel: BaseViewModel
+    public class HomeViewModel : BaseViewModel
     {
         private BookDAO bookDAO = new BookDAO();
         private List<Book> books = new List<Book>();
@@ -43,7 +43,8 @@ namespace MyShop.ViewModels
         }
         public ICommand BackupDatabaseCommand { get; set; }
         public ICommand RestoreDatabaseCommand { get; set; }
-        public HomeViewModel() { 
+        public HomeViewModel()
+        {
             books = bookDAO.GetAllBooks();
             lowQuantityBooks = bookDAO.GetBooksWithQuantityLessThan5();
 
@@ -53,42 +54,37 @@ namespace MyShop.ViewModels
 
             BackupDatabaseCommand = new RelayCommand<object>(p =>
             {
-                try
+
+                using (var context = new MyShopDbContext())
                 {
-                    using (var context = new MyShopDbContext())
+                    var connectionString = context.Database.GetDbConnection().ConnectionString;
+                    var builder = new SqlConnectionStringBuilder(connectionString);
+                    var databaseName = builder.InitialCatalog;
+
+                    var dialog = new SaveFileDialog();
+                    dialog.Filter = "Backup Files (*.bak)|*.bak";
+                    dialog.FileName = $"{databaseName}_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.bak";
+                    if (dialog.ShowDialog() == true)
                     {
-                        var connectionString = context.Database.GetDbConnection().ConnectionString;
-                        var builder = new SqlConnectionStringBuilder(connectionString);
-                        var databaseName = builder.InitialCatalog;
+                        var backupPath = dialog.FileName;
 
-                        var dialog = new SaveFileDialog();
-                        dialog.Filter = "Backup Files (*.bak)|*.bak";
-                        dialog.FileName = $"{databaseName}_{DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")}.bak";
-                        if (dialog.ShowDialog() == true)
+                        using (var connection = new SqlConnection(connectionString))
                         {
-                            var backupPath = dialog.FileName;
+                            connection.Open();
 
-                            using (var connection = new SqlConnection(connectionString))
+                            var backupQuery = $"BACKUP DATABASE [{databaseName}] TO DISK = '{backupPath}'";
+                            using (var command = new SqlCommand(backupQuery, connection))
                             {
-                                connection.Open();
-
-                                var backupQuery = $"BACKUP DATABASE [{databaseName}] TO DISK = '{backupPath}'";
-                                using (var command = new SqlCommand(backupQuery, connection))
-                                {
-                                    command.ExecuteNonQuery();
-                                }
-
-                                connection.Close();
+                                command.ExecuteNonQuery();
                             }
 
-                            MessageBox.Show("Backup created successfully.");
+                            connection.Close();
                         }
+
+                        MessageBox.Show("Backup created successfully.");
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error creating backup: {ex.Message}");
-                }
+
             });
             RestoreDatabaseCommand = new RelayCommand<object>(p =>
             {

@@ -148,7 +148,7 @@ namespace MyShop.ViewModels
             Items = new List<string>();
             Items.AddRange(BookName);
         }
-        public void OnItemSelected()
+        public async Task OnItemSelectedAsync()
         {
             //Console.WriteLine("Da chay");
             // Implement the desired action here.
@@ -160,7 +160,7 @@ namespace MyShop.ViewModels
             var toDate = new DateTime(2023, 4, 30);
 
             //From 11-4-2023 to 30-04-2023
-            numberOfBook =_orderDAO.GetBookSalesByDay(SelectedItem, fromDate, toDate);
+            numberOfBook = await _orderDAO.GetBookSalesByDay(SelectedItem, fromDate, toDate);
             CollectionFromTo = new SeriesCollection()
             {
                 new ColumnSeries    
@@ -179,7 +179,7 @@ namespace MyShop.ViewModels
             
             DateTime endDateWeek = DateTime.UtcNow.Date; // Get the current UTC date
             DateTime startDateWeek = endDateWeek.AddDays(-7);
-            numberOfBook = _orderDAO.GetBookSalesByDay(SelectedItem, startDateWeek, endDateWeek);
+            numberOfBook = await _orderDAO.GetBookSalesByDay(SelectedItem, startDateWeek, endDateWeek);
             CollectionWeek = new SeriesCollection()
             {
                 new ColumnSeries
@@ -198,7 +198,7 @@ namespace MyShop.ViewModels
             
             DateTime endDateMonth = new DateTime(2023, 4, 30);
             DateTime startDateMonth = new DateTime(2023, 4, 1);
-            numberOfBook = _orderDAO.GetBookSalesByDay(SelectedItem, startDateMonth, endDateMonth);
+            numberOfBook = await _orderDAO.GetBookSalesByDay(SelectedItem, startDateMonth, endDateMonth);
             CollectionMonth = new SeriesCollection()
             {
                 new ColumnSeries
@@ -215,7 +215,7 @@ namespace MyShop.ViewModels
             DatesYear = new List<string>();
             DateTime endDateYear = DateTime.UtcNow.Date; // Get the current UTC date
             DateTime startDateYear = endDateYear.AddYears(-1).AddDays(1); // Calculate the start date 1 year ago
-            numberOfBook = _orderDAO.GetBookSalesByDay(SelectedItem, startDateYear, endDateYear);
+            numberOfBook = await _orderDAO.GetBookSalesByDay(SelectedItem, startDateYear, endDateYear);
             CollectionYear = new SeriesCollection()
             {
                 new ColumnSeries
@@ -228,7 +228,6 @@ namespace MyShop.ViewModels
             {
                 DatesYear.Add(DateTime.UtcNow.AddMonths(-i).ToString("MM-yyyy"));
             }
-            //Values = value => value.ToString("C");
         }
     }
 }
